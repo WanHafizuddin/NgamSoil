@@ -25,7 +25,7 @@ export function PublicTreePage() {
 
   const footer = (
     <footer className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-soil-200 px-4 py-6 text-sm text-soil-700">
-      <span>A RootLoop pilot at the Elmina nursery</span>
+      <span>A NgamSoil pilot at the Elmina nursery</span>
       <RolePicker tone="light" />
     </footer>
   );

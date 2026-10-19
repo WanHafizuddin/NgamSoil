@@ -18,7 +18,7 @@ describe('IntakePage', () => {
     await user.type(screen.getByLabelText('Collector'), 'Aiman');
     await user.click(screen.getByRole('button', { name: 'Log intake' }));
 
-    expect(screen.getByRole('status')).toHaveTextContent('Intake RL-I-0023 logged');
+    expect(screen.getByRole('status')).toHaveTextContent('Intake NS-I-0023 logged');
     expect(logItems()).toHaveLength(23);
     expect(logItems()[0]).toHaveTextContent('Aiman');
     expect(logItems()[0]).toHaveTextContent('25 kg');
@@ -48,21 +48,21 @@ describe('IntakePage', () => {
 
   test('groups selected intakes into a new batch', async () => {
     const { user } = renderApp({ route: '/intake' });
-    expect(screen.queryByLabelText('Select RL-I-0001')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Select NS-I-0001')).not.toBeInTheDocument();
     const create = () => screen.getByRole('button', { name: /Create batch from/ });
     expect(create()).toBeDisabled();
 
-    await user.click(screen.getByLabelText('Select RL-I-0021'));
-    await user.click(screen.getByLabelText('Select RL-I-0022'));
+    await user.click(screen.getByLabelText('Select NS-I-0021'));
+    await user.click(screen.getByLabelText('Select NS-I-0022'));
     expect(create()).toHaveAccessibleName('Create batch from 2 selected');
     await user.click(create());
 
-    expect(screen.getByRole('heading', { level: 1, name: 'RL-B-2026-005' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'NS-B-2026-005' })).toBeInTheDocument();
   });
 
   test('each selection checkbox sits in a 44 px tap target', () => {
     renderApp({ route: '/intake' });
-    const target = screen.getByLabelText('Select RL-I-0021').closest('label');
+    const target = screen.getByLabelText('Select NS-I-0021').closest('label');
     expect(target).not.toBeNull();
     expect(target).toHaveClass('h-11', 'w-11');
   });

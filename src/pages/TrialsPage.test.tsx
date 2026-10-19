@@ -14,16 +14,16 @@ const lastRowCells = () => {
 describe('TrialsPage', () => {
   test('lists the sample trials', () => {
     renderApp({ route: '/trials' });
-    expect(screen.getByRole('link', { name: /Meranti/ })).toHaveAttribute('href', '/trials/RL-TR-001');
-    expect(screen.getByRole('link', { name: /Tembusu/ })).toHaveAttribute('href', '/trials/RL-TR-002');
+    expect(screen.getByRole('link', { name: /Meranti/ })).toHaveAttribute('href', '/trials/NS-TR-001');
+    expect(screen.getByRole('link', { name: /Tembusu/ })).toHaveAttribute('href', '/trials/NS-TR-002');
   });
 
   test('offers only batches that passed the maturity test', () => {
-    renderApp({ route: '/trials?batch=RL-B-2026-001' });
+    renderApp({ route: '/trials?batch=NS-B-2026-001' });
     const select = screen.getByLabelText('Compost batch');
-    expect(select).toHaveValue('RL-B-2026-001');
+    expect(select).toHaveValue('NS-B-2026-001');
     const options = within(select).getAllByRole('option').map((o) => o.textContent);
-    expect(options).toEqual(['RL-B-2026-001 · GI 92.0%']);
+    expect(options).toEqual(['NS-B-2026-001 · GI 92.0%']);
   });
 
   test('creates a trial with three trays', async () => {
@@ -47,7 +47,7 @@ describe('TrialDetailPage', () => {
   test('adds a weekly record from a seedling photo', async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
-    renderApp({ route: '/trials/RL-TR-002', user });
+    renderApp({ route: '/trials/NS-TR-002', user });
 
     await user.click(screen.getByRole('tab', { name: '25% compost' }));
     await user.upload(screen.getByLabelText('Weekly seedling photo'), new File(['x'], 's.jpg', { type: 'image/jpeg' }));
@@ -59,7 +59,7 @@ describe('TrialDetailPage', () => {
   });
 
   test('a death log lowers the alive count', async () => {
-    const { user } = renderApp({ route: '/trials/RL-TR-002' });
+    const { user } = renderApp({ route: '/trials/NS-TR-002' });
     await user.click(screen.getByRole('tab', { name: '25% compost' }));
     expect(lastRowCells()[3]).toHaveTextContent('12');
 
@@ -73,7 +73,7 @@ describe('TrialDetailPage', () => {
   });
 
   test('a pest log needs a note', async () => {
-    const { user } = renderApp({ route: '/trials/RL-TR-002' });
+    const { user } = renderApp({ route: '/trials/NS-TR-002' });
     await user.selectOptions(screen.getByLabelText('Log type'), 'Pest');
     await user.click(screen.getByRole('button', { name: 'Add log' }));
     expect(screen.getByText('Describe what you saw')).toBeInTheDocument();

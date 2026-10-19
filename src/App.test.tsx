@@ -11,12 +11,12 @@ const ROUTES: [string, string, string][] = [
   ['/trials', 'Nursery trials', 'Nursery trials'],
   ['/recommendations', 'Recommendations', 'Recommendations'],
   ['/trees', 'Tree QR tags', 'Tree QR tags'],
-  ['/about', 'About RootLoop', 'About RootLoop'],
+  ['/about', 'About NgamSoil', 'About NgamSoil'],
   ['/nope', 'Page not found', 'Page not found'],
-  ['/batches/RL-B-2026-001', 'RL-B-2026-001', 'Batch not found'],
-  ['/batches/RL-B-2026-003/test', 'Maturity test', 'Batch not found'],
-  ['/trials/RL-TR-002', 'Tembusu trial', 'Trial not found'],
-  ['/tree/RL-T-0001', 'Tembusu', 'Tree not found'],
+  ['/batches/NS-B-2026-001', 'NS-B-2026-001', 'Batch not found'],
+  ['/batches/NS-B-2026-003/test', 'Maturity test', 'Batch not found'],
+  ['/trials/NS-TR-002', 'Tembusu trial', 'Trial not found'],
+  ['/tree/NS-T-0001', 'Tembusu', 'Tree not found'],
 ];
 
 describe.each(ROUTES)('route %s', (route, withSample, withEmpty) => {
@@ -48,7 +48,7 @@ describe('roles', () => {
   test('public is pointed to a tree page', () => {
     renderApp({ role: 'public', route: '/intake' });
     expect(screen.getByRole('heading', { level: 1, name: 'Not available for this role' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Open an example tree page' })).toHaveAttribute('href', '/tree/RL-T-0001');
+    expect(screen.getByRole('link', { name: 'Open an example tree page' })).toHaveAttribute('href', '/tree/NS-T-0001');
   });
 
   test('switching role goes to that role’s home screen', async () => {

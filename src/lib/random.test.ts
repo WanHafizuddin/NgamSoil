@@ -18,7 +18,7 @@ describe('mulberry32', () => {
 
 describe('hashString', () => {
   test('is stable and distinguishes inputs', () => {
-    expect(hashString('RL-B-2026-001')).toBe(hashString('RL-B-2026-001'));
+    expect(hashString('NS-B-2026-001')).toBe(hashString('NS-B-2026-001'));
     expect(hashString('a')).not.toBe(hashString('b'));
     expect(hashString('a')).toBeGreaterThanOrEqual(0);
   });

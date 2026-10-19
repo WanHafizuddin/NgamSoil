@@ -21,7 +21,7 @@ const PILOT = [
 export function AboutPage() {
   return (
     <>
-      <PageHeader title="About RootLoop" intro="Township garden waste becomes compost, and each tree species gets the compost mix that suits it." />
+      <PageHeader title="About NgamSoil" intro="Township garden waste becomes compost, and each tree species gets the compost mix that suits it." />
 
       <blockquote className="mb-6 rounded-2xl bg-leaf-900 p-6 font-display text-2xl leading-snug text-soil-50 md:text-3xl">
         Others ask if compost is ready. We ask if it's right for this tree.
@@ -36,14 +36,14 @@ export function AboutPage() {
         </Panel>
         <Panel title="What's new">
           <p className="text-soil-900">
-            RootLoop links each compost batch to the tree species grown in it. Every batch is tested before use, every species is trialled at
+            NgamSoil links each compost batch to the tree species grown in it. Every batch is tested before use, every species is trialled at
             three mixes, and the result travels with the tree on its QR tag.
           </p>
         </Panel>
       </div>
 
       <Panel title="How it works" className="mt-4">
-        <ol aria-label="How RootLoop works" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <ol aria-label="How NgamSoil works" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {FLOW.map(({ icon: Icon, title, body }, i) => (
             <li key={title} className="flex gap-3 rounded-xl bg-soil-50 p-3">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-leaf-700 text-white">

@@ -14,7 +14,7 @@ describe('reducer', () => {
 
   test('addIntake appends', () => {
     const intake: Intake = {
-      id: 'RL-I-0023',
+      id: 'NS-I-0023',
       date: '2026-10-19',
       source: 'Landscape team',
       material: 'grass',
@@ -25,30 +25,30 @@ describe('reducer', () => {
   });
 
   test('createBatch links unbatched intakes and simulates readings', () => {
-    const next = reducer(sample(), { type: 'createBatch', id: 'RL-B-2026-005', intakeIds: ['RL-I-0021', 'RL-I-0022'], now });
+    const next = reducer(sample(), { type: 'createBatch', id: 'NS-B-2026-005', intakeIds: ['NS-I-0021', 'NS-I-0022'], now });
     const batch = next.batches.at(-1)!;
-    expect(batch).toMatchObject({ id: 'RL-B-2026-005', status: 'composting', createdAt: now, intakeIds: ['RL-I-0021', 'RL-I-0022'] });
+    expect(batch).toMatchObject({ id: 'NS-B-2026-005', status: 'composting', createdAt: now, intakeIds: ['NS-I-0021', 'NS-I-0022'] });
     expect(batch.tempReadings.length).toBeGreaterThan(100);
     expect(batch.tempReadings[0].t).toBe('2026-10-12T00:00:00.000Z');
-    expect(next.intakes.filter((i) => i.batchId === 'RL-B-2026-005').map((i) => i.id)).toEqual(['RL-I-0021', 'RL-I-0022']);
+    expect(next.intakes.filter((i) => i.batchId === 'NS-B-2026-005').map((i) => i.id)).toEqual(['NS-I-0021', 'NS-I-0022']);
   });
 
   test('createBatch ignores already-batched intakes', () => {
     const state = sample();
-    expect(reducer(state, { type: 'createBatch', id: 'RL-B-2026-005', intakeIds: ['RL-I-0001'], now })).toBe(state);
+    expect(reducer(state, { type: 'createBatch', id: 'NS-B-2026-005', intakeIds: ['NS-I-0001'], now })).toBe(state);
   });
 
   test('createBatch caps readings at 60 days', () => {
     const state = sample();
     const late = '2027-03-01T00:00:00.000Z';
-    const batch = reducer(state, { type: 'createBatch', id: 'RL-B-2027-001', intakeIds: ['RL-I-0014'], now: late }).batches.at(-1)!;
+    const batch = reducer(state, { type: 'createBatch', id: 'NS-B-2027-001', intakeIds: ['NS-I-0014'], now: late }).batches.at(-1)!;
     expect(batch.tempReadings[0].t).toBe('2026-12-31T00:00:00.000Z');
   });
 
   test('markReadyForTest only from composting', () => {
     const state = sample();
-    expect(reducer(state, { type: 'markReadyForTest', batchId: 'RL-B-2026-004' }).batches[3].status).toBe('ready_for_test');
-    expect(reducer(state, { type: 'markReadyForTest', batchId: 'RL-B-2026-002' })).toBe(state);
+    expect(reducer(state, { type: 'markReadyForTest', batchId: 'NS-B-2026-004' }).batches[3].status).toBe('ready_for_test');
+    expect(reducer(state, { type: 'markReadyForTest', batchId: 'NS-B-2026-002' })).toBe(state);
   });
 
   test('saveTestResult sets the result and status', () => {
@@ -61,17 +61,17 @@ describe('reducer', () => {
       gi: 100,
       passed: true,
     };
-    const next = reducer(sample(), { type: 'saveTestResult', batchId: 'RL-B-2026-003', result });
+    const next = reducer(sample(), { type: 'saveTestResult', batchId: 'NS-B-2026-003', result });
     expect(next.batches[2]).toMatchObject({ status: 'passed', testResult: result });
     const state = sample();
-    expect(reducer(state, { type: 'saveTestResult', batchId: 'RL-B-2026-004', result })).toBe(state);
+    expect(reducer(state, { type: 'saveTestResult', batchId: 'NS-B-2026-004', result })).toBe(state);
   });
 
   test('createTrial makes 3 trays and sends the batch to the nursery', () => {
-    const next = reducer(sample(), { type: 'createTrial', id: 'RL-TR-003', species: 'angsana', batchId: 'RL-B-2026-001', now });
+    const next = reducer(sample(), { type: 'createTrial', id: 'NS-TR-003', species: 'angsana', batchId: 'NS-B-2026-001', now });
     const trial = next.trials.at(-1)!;
-    expect(trial).toMatchObject({ id: 'RL-TR-003', species: 'angsana', batchId: 'RL-B-2026-001', startDate: '2026-10-19' });
-    expect(trial.trays.map((t) => t.id)).toEqual(['RL-TR-003-M0', 'RL-TR-003-M25', 'RL-TR-003-M50']);
+    expect(trial).toMatchObject({ id: 'NS-TR-003', species: 'angsana', batchId: 'NS-B-2026-001', startDate: '2026-10-19' });
+    expect(trial.trays.map((t) => t.id)).toEqual(['NS-TR-003-M0', 'NS-TR-003-M25', 'NS-TR-003-M50']);
     for (const t of trial.trays) {
       expect(t.weekly).toEqual([{ week: 0, heightCm: 12, leafHealth: expect.any(Number), alive: 12 }]);
       expect(t.logs).toEqual([]);
@@ -81,27 +81,27 @@ describe('reducer', () => {
 
   test('createTrial rejects batches that did not pass', () => {
     const state = sample();
-    expect(reducer(state, { type: 'createTrial', id: 'RL-TR-003', species: 'angsana', batchId: 'RL-B-2026-002', now })).toBe(state);
+    expect(reducer(state, { type: 'createTrial', id: 'NS-TR-003', species: 'angsana', batchId: 'NS-B-2026-002', now })).toBe(state);
   });
 
   test('createTrial from a passed batch marks it sent to nursery', () => {
     const state = sample();
     state.batches[2] = { ...state.batches[2], status: 'passed' };
-    const next = reducer(state, { type: 'createTrial', id: 'RL-TR-003', species: 'kelat', batchId: 'RL-B-2026-003', now });
+    const next = reducer(state, { type: 'createTrial', id: 'NS-TR-003', species: 'kelat', batchId: 'NS-B-2026-003', now });
     expect(next.batches[2].status).toBe('sent_to_nursery');
   });
 
   test('addWeeklyRecord appends to the tray', () => {
     const record = { week: 7, heightCm: 23, leafHealth: 85, alive: 12 };
-    const next = reducer(sample(), { type: 'addWeeklyRecord', trialId: 'RL-TR-002', trayId: 'RL-TR-002-M25', record });
+    const next = reducer(sample(), { type: 'addWeeklyRecord', trialId: 'NS-TR-002', trayId: 'NS-TR-002-M25', record });
     expect(next.trials[1].trays[1].weekly.at(-1)).toEqual(record);
   });
 
   test('a death log reduces the latest alive count', () => {
     const next = reducer(sample(), {
       type: 'addTrayLog',
-      trialId: 'RL-TR-002',
-      trayId: 'RL-TR-002-M25',
+      trialId: 'NS-TR-002',
+      trayId: 'NS-TR-002-M25',
       log: { date: '2026-10-19', kind: 'death', note: 'Stem rot', count: 2 },
     });
     const tray = next.trials[1].trays[1];
@@ -112,15 +112,15 @@ describe('reducer', () => {
   test('a death log never goes below zero', () => {
     const next = reducer(sample(), {
       type: 'addTrayLog',
-      trialId: 'RL-TR-002',
-      trayId: 'RL-TR-002-M25',
+      trialId: 'NS-TR-002',
+      trayId: 'NS-TR-002-M25',
       log: { date: '2026-10-19', kind: 'death', note: 'Flood', count: 99 },
     });
     expect(next.trials[1].trays[1].weekly.at(-1)!.alive).toBe(0);
   });
 
   test('createTree appends', () => {
-    const tree = { id: 'RL-T-0007', species: 'tembusu' as const, trayId: 'RL-TR-002-M25', batchId: 'RL-B-2026-001' };
+    const tree = { id: 'NS-T-0007', species: 'tembusu' as const, trayId: 'NS-TR-002-M25', batchId: 'NS-B-2026-001' };
     expect(reducer(sample(), { type: 'createTree', tree }).trees.at(-1)).toEqual(tree);
   });
 

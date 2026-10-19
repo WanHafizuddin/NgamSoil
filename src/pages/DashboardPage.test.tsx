@@ -24,7 +24,7 @@ describe('DashboardPage', () => {
   test('lists active alerts linked to their batch', () => {
     renderApp();
     expect(alertLinks()).toHaveLength(2);
-    for (const link of alertLinks()) expect(link).toHaveAttribute('href', '/batches/RL-B-2026-004');
+    for (const link of alertLinks()) expect(link).toHaveAttribute('href', '/batches/NS-B-2026-004');
   });
 
   test('clear and reset the data', async () => {

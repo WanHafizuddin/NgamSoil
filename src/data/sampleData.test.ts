@@ -16,15 +16,15 @@ describe('buildSampleData', () => {
     const total = d.intakes.reduce((s, i) => s + i.weightKg, 0);
     expect(total).toBeGreaterThanOrEqual(1190);
     expect(total).toBeLessThanOrEqual(1210);
-    expect(d.intakes.map((i) => i.id)).toEqual(Array.from({ length: 22 }, (_, k) => `RL-I-${String(k + 1).padStart(4, '0')}`));
+    expect(d.intakes.map((i) => i.id)).toEqual(Array.from({ length: 22 }, (_, k) => `NS-I-${String(k + 1).padStart(4, '0')}`));
   });
 
   test('has 4 batches with the spec statuses and GI results', () => {
     expect(d.batches.map((b) => [b.id, b.status])).toEqual([
-      ['RL-B-2026-001', 'sent_to_nursery'],
-      ['RL-B-2026-002', 'failed'],
-      ['RL-B-2026-003', 'ready_for_test'],
-      ['RL-B-2026-004', 'composting'],
+      ['NS-B-2026-001', 'sent_to_nursery'],
+      ['NS-B-2026-002', 'failed'],
+      ['NS-B-2026-003', 'ready_for_test'],
+      ['NS-B-2026-004', 'composting'],
     ]);
     expect(d.batches[0].testResult).toMatchObject({ gi: 92, passed: true });
     expect(d.batches[1].testResult).toMatchObject({ gi: 64, passed: false });
@@ -38,7 +38,7 @@ describe('buildSampleData', () => {
       }
     }
     const unbatched = d.intakes.filter((i) => !i.batchId).map((i) => i.id);
-    expect(unbatched).toEqual(['RL-I-0014', 'RL-I-0021', 'RL-I-0022']);
+    expect(unbatched).toEqual(['NS-I-0014', 'NS-I-0021', 'NS-I-0022']);
   });
 
   test('alerts only on the composting batch', () => {
@@ -50,8 +50,8 @@ describe('buildSampleData', () => {
 
   test('has 2 trials with 3 trays of 7 weekly records', () => {
     expect(d.trials.map((t) => [t.id, t.species])).toEqual([
-      ['RL-TR-001', 'meranti'],
-      ['RL-TR-002', 'tembusu'],
+      ['NS-TR-001', 'meranti'],
+      ['NS-TR-002', 'tembusu'],
     ]);
     for (const t of d.trials) {
       expect(t.trays.map((tr) => tr.id)).toEqual([`${t.id}-M0`, `${t.id}-M25`, `${t.id}-M50`]);
@@ -81,8 +81,8 @@ describe('buildSampleData', () => {
   });
 
   test('has 6 tagged trees', () => {
-    expect(d.trees.map((t) => t.id)).toEqual(['RL-T-0001', 'RL-T-0002', 'RL-T-0003', 'RL-T-0004', 'RL-T-0005', 'RL-T-0006']);
-    expect(d.trees[0]).toMatchObject({ species: 'tembusu', trayId: 'RL-TR-002-M25', batchId: 'RL-B-2026-001' });
+    expect(d.trees.map((t) => t.id)).toEqual(['NS-T-0001', 'NS-T-0002', 'NS-T-0003', 'NS-T-0004', 'NS-T-0005', 'NS-T-0006']);
+    expect(d.trees[0]).toMatchObject({ species: 'tembusu', trayId: 'NS-TR-002-M25', batchId: 'NS-B-2026-001' });
   });
 });
 

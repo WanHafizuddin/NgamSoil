@@ -1,12 +1,12 @@
-# RootLoop
+# NgamSoil
 
-RootLoop turns a township's fallen leaves, branches and grass into compost. It checks every batch with IoT sensors and AI photo analysis, then finds which compost mix suits each tree species in the nursery.
+NgamSoil turns a township's fallen leaves, branches and grass into compost. It checks every batch with IoT sensors and AI photo analysis, then finds which compost mix suits each tree species in the nursery.
 
 > Others ask if compost is ready. We ask if it's right for this tree.
 
 This is a clickable prototype built for the Sime Darby Property hackathon (Planet theme).
 
-**Sample data notice:** RootLoop has no backend. The sensors (temperature, soil moisture) and the AI photo analysis are simulated, and every simulated value is marked "Sample data" in the app. Data is stored in your browser's localStorage. You can reset it to the sample story or clear it from the Dashboard.
+**Sample data notice:** NgamSoil has no backend. The sensors (temperature, soil moisture) and the AI photo analysis are simulated, and every simulated value is marked "Sample data" in the app. Data is stored in your browser's localStorage. You can reset it to the sample story or clear it from the Dashboard.
 
 ## Prerequisites
 
@@ -40,7 +40,7 @@ There is no login. Use the **Demo role** picker in the header:
 3. **Maturity test:** upload any photo and choose **Analyse**. Edit a root length to watch the Germination Index update, then save.
 4. **Trials:** start a trial with a passed batch, and add a weekly seedling photo.
 5. **Recommendations:** see the preliminary best mix per species.
-6. **Tree tags:** open a QR code's public page, or scan it from a phone. Sample tags RL-T-0001 to RL-T-0006 open on any device. Tags you add are saved in your browser only, so they open only on the device that created them.
+6. **Tree tags:** open a QR code's public page, or scan it from a phone. Sample tags NS-T-0001 to NS-T-0006 open on any device. Tags you add are saved in your browser only, so they open only on the device that created them.
 
 ## Deploy to Vercel
 
@@ -63,7 +63,7 @@ npx vercel
 npx vercel --prod
 ```
 
-`vercel.json` rewrites every path to `index.html`. QR codes link straight to `/tree/:id`, and without the rewrite those deep links would return 404. After deploying, open `https://<your-deployment>/tree/RL-T-0001` directly to confirm the rewrite works.
+`vercel.json` rewrites every path to `index.html`. QR codes link straight to `/tree/:id`, and without the rewrite those deep links would return 404. After deploying, open `https://<your-deployment>/tree/NS-T-0001` directly to confirm the rewrite works.
 
 ## Project structure
 

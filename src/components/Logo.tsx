@@ -6,7 +6,7 @@ export function Logo({ tagline = false }: { tagline?: boolean }) {
         <path d="M11 21c0-6 3.5-9.5 10-10.5-.8 6.5-4.3 10-10 10.5z" fill="#E3EFE2" />
       </svg>
       <span className="leading-tight">
-        <span className="block font-display text-xl font-semibold tracking-tight">RootLoop</span>
+        <span className="block font-display text-xl font-semibold tracking-tight">NgamSoil</span>
         {tagline && <span className="block text-xs text-leaf-100/80">Township compost, matched to trees</span>}
       </span>
     </span>

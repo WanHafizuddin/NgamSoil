@@ -8,7 +8,7 @@ const start = '2026-10-01T00:00:00.000Z';
 
 function batch(extra: Partial<TempOptions> = {}, status: BatchStatus = 'composting'): Batch {
   return {
-    id: 'RL-B-2026-009',
+    id: 'NS-B-2026-009',
     createdAt: start,
     intakeIds: [],
     status,

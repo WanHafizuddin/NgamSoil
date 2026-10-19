@@ -65,7 +65,7 @@ describe('scoreTrays', () => {
 });
 
 describe('recommendForSpecies', () => {
-  const trial = (trays: Tray[]): Trial => ({ id: 'RL-TR-009', species: 'tembusu', batchId: 'B', startDate: '2026-09-07', trays });
+  const trial = (trays: Tray[]): Trial => ({ id: 'NS-TR-009', species: 'tembusu', batchId: 'B', startDate: '2026-09-07', trays });
 
   test('returns null when the species has no trials', () => {
     expect(recommendForSpecies([trial([tray(25, 5, 90, 12)])], 'meranti')).toBeNull();

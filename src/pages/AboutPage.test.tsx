@@ -9,5 +9,5 @@ test('About shows the pitch, SDP fit, hardware budget and pilot plan', () => {
   expect(screen.getByText(/RM 157/)).toBeInTheDocument();
   expect(screen.getByRole('table', { name: 'Prototype hardware' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: /Pilot plan/ })).toBeInTheDocument();
-  expect(screen.getByRole('list', { name: 'How RootLoop works' }).children).toHaveLength(6);
+  expect(screen.getByRole('list', { name: 'How NgamSoil works' }).children).toHaveLength(6);
 });

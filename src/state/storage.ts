@@ -1,8 +1,8 @@
 import type { AppData, Role } from '../types';
 import { buildSampleData } from '../data/sampleData';
 
-export const STORAGE_KEY = 'rootloop:data:v1';
-export const ROLE_KEY = 'rootloop:role';
+export const STORAGE_KEY = 'ngamsoil:data:v1';
+export const ROLE_KEY = 'ngamsoil:role';
 const ROLES: Role[] = ['admin', 'staff', 'public'];
 
 const isRecord = (item: unknown) =>

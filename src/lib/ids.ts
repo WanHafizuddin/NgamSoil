@@ -12,19 +12,19 @@ function nextId(items: readonly HasId[], prefix: string, digits: number): string
 }
 
 export function nextBatchId(batches: readonly HasId[], year: number): string {
-  return nextId(batches, `RL-B-${year}-`, 3);
+  return nextId(batches, `NS-B-${year}-`, 3);
 }
 
 export function nextIntakeId(intakes: readonly HasId[]): string {
-  return nextId(intakes, 'RL-I-', 4);
+  return nextId(intakes, 'NS-I-', 4);
 }
 
 export function nextTrialId(trials: readonly HasId[]): string {
-  return nextId(trials, 'RL-TR-', 3);
+  return nextId(trials, 'NS-TR-', 3);
 }
 
 export function nextTreeId(trees: readonly HasId[]): string {
-  return nextId(trees, 'RL-T-', 4);
+  return nextId(trees, 'NS-T-', 4);
 }
 
 export function trayId(trialId: string, mixPct: MixPct): string {
