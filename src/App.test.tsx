@@ -15,6 +15,7 @@ const ROUTES: [string, string, string][] = [
   ['/nope', 'Page not found', 'Page not found'],
   ['/batches/RL-B-2026-001', 'RL-B-2026-001', 'Batch not found'],
   ['/batches/RL-B-2026-003/test', 'Maturity test', 'Batch not found'],
+  ['/trials/RL-TR-002', 'Tembusu trial', 'Trial not found'],
 ];
 
 describe.each(ROUTES)('route %s', (route, withSample, withEmpty) => {
