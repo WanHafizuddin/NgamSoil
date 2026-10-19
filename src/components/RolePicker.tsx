@@ -22,7 +22,7 @@ export function RolePicker({ tone = 'dark' }: { tone?: 'dark' | 'light' }) {
 
   return (
     <label className="flex items-center gap-2 text-sm">
-      <span className={tone === 'dark' ? 'text-leaf-100' : 'text-soil-700'}>Demo role</span>
+      <span className={`sr-only sm:not-sr-only ${tone === 'dark' ? 'text-leaf-100' : 'text-soil-700'}`}>Demo role</span>
       <select
         value={role}
         onChange={(e) => {
