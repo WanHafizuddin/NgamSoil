@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { PageHeader } from '../components/PageHeader';
 import { StatusBadge } from '../components/StatusBadge';
 import { EmptyState } from '../components/EmptyState';
+import { SampleBadge } from '../components/SampleBadge';
 import { btnPrimary } from '../components/ui';
 import { useData } from '../state/DataContext';
 import { formatDate, formatGI, formatKg } from '../lib/format';
@@ -39,7 +40,12 @@ export function BatchesPage() {
                 <span className="text-sm text-soil-700">
                   Started {formatDate(b.createdAt)}, {formatKg(weightOf(b.intakeIds))} from {b.intakeIds.length} loads
                 </span>
-                {b.testResult && <span className="text-sm font-bold text-soil-900">GI {formatGI(b.testResult.gi)}</span>}
+                {b.testResult && (
+                  <span className="flex flex-wrap items-center gap-2">
+                    <span className="text-sm font-bold text-soil-900">GI {formatGI(b.testResult.gi)}</span>
+                    <SampleBadge />
+                  </span>
+                )}
               </Link>
             </li>
           ))}

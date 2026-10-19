@@ -11,7 +11,11 @@ import { formatDate, formatKg, mixLabel } from '../lib/format';
 const STEPS = [
   { icon: Leaf, title: 'Leaves collected', body: 'Fallen leaves, branches and grass from township parks and homes.' },
   { icon: Thermometer, title: 'Composted and tested', body: 'Sensors watched the pile heat up, and a seed test checked it was mature.' },
-  { icon: Sprout, title: 'Grown into this tree', body: 'The nursery picked the compost mix that suited this species best.' },
+  {
+    icon: Sprout,
+    title: 'Grown into this tree',
+    body: 'The nursery is trialling compost mixes for this species. Results stay preliminary until the pilot ends.',
+  },
 ];
 
 export function PublicTreePage() {
@@ -36,6 +40,7 @@ export function PublicTreePage() {
         <main className="mx-auto max-w-xl px-4 py-12 text-center">
           <h1 className="text-3xl font-semibold text-leaf-900">Tree not found</h1>
           <p className="mt-3 text-soil-700">Check the tag and try again.</p>
+          <p className="mt-2 text-sm text-soil-700">Tags added in this demo only open on the device that created them.</p>
         </main>
         {footer}
       </div>
@@ -54,7 +59,11 @@ export function PublicTreePage() {
           <p className="mt-10 text-sm text-leaf-100">Tree {tree.id}</p>
           <h1 className="font-display text-6xl font-semibold tracking-tight">{species.common}</h1>
           <p className="mt-1 text-lg italic text-leaf-100">{species.scientific}</p>
-          <p className="mt-6 max-w-sm font-display text-2xl leading-snug">Grown with compost from your township's leaves</p>
+          <p className="mt-6 max-w-sm font-display text-2xl leading-snug">
+            {tray?.mixPct === 0
+              ? "A control tree in a trial of compost from your township's leaves"
+              : "Grown with compost from your township's leaves"}
+          </p>
         </div>
         <Strata />
       </header>
@@ -67,7 +76,7 @@ export function PublicTreePage() {
           </div>
           <div>
             <dt className="text-sm text-soil-700">Location</dt>
-            <dd className="font-bold text-soil-900">{tree.location ?? 'Elmina nursery'}</dd>
+            <dd className="font-bold text-soil-900">{tree.location ?? (tree.plantedAt ? 'Not recorded' : 'Elmina nursery')}</dd>
           </div>
           <div>
             <dt className="text-sm text-soil-700">Compost batch</dt>

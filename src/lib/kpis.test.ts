@@ -64,6 +64,25 @@ test('computes KPIs from data', () => {
   expect(k.survivalRate).toBeCloseTo(22 / 24);
 });
 
+test('deaths logged on the week-0 record still lower survival', () => {
+  const data: AppData = {
+    version: 1,
+    intakes: [],
+    batches: [],
+    trials: [
+      {
+        id: 'TR',
+        species: 'angsana',
+        batchId: 'B1',
+        startDate: '2026-10-19',
+        trays: [{ id: 'T', mixPct: 0, moisture: [], logs: [], weekly: [{ week: 0, heightCm: 12, leafHealth: 76, alive: 6 }] }],
+      },
+    ],
+    trees: [],
+  };
+  expect(computeKpis(data).survivalRate).toBeCloseTo(0.5);
+});
+
 test('wasteByWeek zero-fills weeks ending at the latest intake', () => {
   const intakes = [intake('a', '2026-10-12', 10), intake('b', '2026-10-18', 5), intake('c', '2026-10-05', 20)];
   expect(wasteByWeek(intakes, 3)).toEqual([

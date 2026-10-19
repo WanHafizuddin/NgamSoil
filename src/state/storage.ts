@@ -5,10 +5,16 @@ export const STORAGE_KEY = 'rootloop:data:v1';
 export const ROLE_KEY = 'rootloop:role';
 const ROLES: Role[] = ['admin', 'staff', 'public'];
 
+const isRecord = (item: unknown) =>
+  typeof item === 'object' && item !== null && typeof (item as { id?: unknown }).id === 'string';
+
 function isAppData(value: unknown): value is AppData {
   if (typeof value !== 'object' || value === null) return false;
   const v = value as Record<string, unknown>;
-  return v.version === 1 && ['intakes', 'batches', 'trials', 'trees'].every((k) => Array.isArray(v[k]));
+  return (
+    v.version === 1 &&
+    ['intakes', 'batches', 'trials', 'trees'].every((k) => Array.isArray(v[k]) && (v[k] as unknown[]).every(isRecord))
+  );
 }
 
 export function loadData(): AppData {

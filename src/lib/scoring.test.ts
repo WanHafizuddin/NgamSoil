@@ -3,15 +3,15 @@ import { recommendForSpecies, scoreTrays } from './scoring';
 import type { MixPct, Tray, Trial } from '../types';
 
 let n = 0;
-function tray(mixPct: MixPct, growth: number, leaf: number, aliveEnd: number): Tray {
+function tray(mixPct: MixPct, growth: number, leaf: number, aliveEnd: number, weeks = 6, aliveStart = 12): Tray {
   return {
     id: `T${n++}`,
     mixPct,
     moisture: [],
     logs: [],
     weekly: [
-      { week: 0, heightCm: 10, leafHealth: leaf, alive: 12 },
-      { week: 6, heightCm: 10 + growth, leafHealth: leaf, alive: aliveEnd },
+      { week: 0, heightCm: 10, leafHealth: leaf, alive: aliveStart },
+      { week: weeks, heightCm: 10 + growth, leafHealth: leaf, alive: aliveEnd },
     ],
   };
 }
@@ -46,10 +46,21 @@ describe('scoreTrays', () => {
   });
 
   test('averages trays of the same mix', () => {
-    const [m] = scoreTrays([tray(25, 10, 80, 12), tray(25, 6, 70, 12)]);
+    const [m] = scoreTrays([tray(25, 12, 80, 12), tray(25, 6, 70, 12)]);
     expect(m.trayCount).toBe(2);
-    expect(m.heightGrowthCm).toBeCloseTo(8);
+    expect(m.growthPerWeekCm).toBeCloseTo(1.5);
     expect(m.avgLeafHealth).toBeCloseTo(75);
+  });
+
+  test('a tray with fewer weeks does not distort the ranking', () => {
+    const sixWeeks = [tray(0, 8.4, 72, 10), tray(25, 12.6, 85, 12), tray(50, 10.2, 78, 11)];
+    const newTrialOneWeek = tray(25, 2.1, 85, 12, 1);
+    expect(scoreTrays([...sixWeeks, newTrialOneWeek]).map((m) => m.mixPct)).toEqual([25, 50, 0]);
+  });
+
+  test('deaths logged before the first photo still count against survival', () => {
+    const [m] = scoreTrays([tray(25, 10, 80, 6, 6, 6)]);
+    expect(m.survivalRate).toBeCloseTo(0.5);
   });
 });
 
@@ -67,12 +78,17 @@ describe('recommendForSpecies', () => {
     expect(rec.weekCount).toBe(6);
     expect(rec.trialCount).toBe(1);
     expect(rec.reason).toBe(
-      '25% compost grew 12.6 cm in 6 weeks with leaf health 85/100 and 100% survival, vs 8.4 cm for the 0% control.',
+      '25% compost grew 2.1 cm a week over 6 weeks with leaf health 85/100 and 100% survival, vs 1.4 cm a week for the 0% control.',
     );
   });
 
   test('ends the reason with a full stop when the control wins', () => {
     const rec = recommendForSpecies([trial([tray(0, 12, 85, 12), tray(25, 6, 70, 12)])], 'tembusu')!;
-    expect(rec.reason).toBe('0% compost grew 12.0 cm in 6 weeks with leaf health 85/100 and 100% survival.');
+    expect(rec.reason).toBe('0% compost grew 2.0 cm a week over 6 weeks with leaf health 85/100 and 100% survival.');
+  });
+
+  test('uses the singular for one week', () => {
+    const rec = recommendForSpecies([trial([tray(25, 2, 85, 12, 1)])], 'tembusu')!;
+    expect(rec.reason).toContain('over 1 week with');
   });
 });

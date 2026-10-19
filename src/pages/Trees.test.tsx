@@ -58,5 +58,30 @@ describe('PublicTreePage', () => {
     renderApp({ route: '/tree/RL-T-9999', role: 'public' });
     expect(screen.getByRole('heading', { level: 1, name: 'Tree not found' })).toBeInTheDocument();
     expect(screen.getByText('Check the tag and try again.')).toBeInTheDocument();
+    expect(screen.getByText(/only open on the device that created them/)).toBeInTheDocument();
   });
+
+  test('a control-tray tree does not claim it grew in compost', () => {
+    renderApp({ route: '/tree/RL-T-0006', role: 'public' });
+    expect(screen.queryByText(HEADLINE)).not.toBeInTheDocument();
+    expect(screen.getByText("A control tree in a trial of compost from your township's leaves")).toBeInTheDocument();
+  });
+
+  test('the journey describes the trial as preliminary', () => {
+    renderApp({ route: '/tree/RL-T-0001', role: 'public' });
+    expect(screen.getByText(/preliminary/i)).toBeInTheDocument();
+    expect(screen.queryByText(/suited this species best/)).not.toBeInTheDocument();
+  });
+
+  test('a planted tree without a location says so', () => {
+    const data = buildSampleData();
+    data.trees[2] = { ...data.trees[2], plantedAt: '2026-10-17' };
+    renderApp({ route: '/tree/RL-T-0003', role: 'public', data });
+    expect(screen.getByText('Not recorded')).toBeInTheDocument();
+  });
+});
+
+test('TreesPage explains where new tags work', () => {
+  renderApp({ route: '/trees' });
+  expect(screen.getByText(/saved in this browser only/)).toBeInTheDocument();
 });

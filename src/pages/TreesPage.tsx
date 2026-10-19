@@ -25,6 +25,10 @@ export function TreesPage() {
         )}
       </PageHeader>
 
+      <p className="-mt-3 mb-5 max-w-2xl text-sm text-soil-700 print:hidden">
+        New tags are saved in this browser only, so they open on this device. Sample tags RL-T-0001 to RL-T-0006 open on any device.
+      </p>
+
       {data.trees.length === 0 ? (
         <EmptyState title="No trees tagged yet" body="Tag a seedling from a trial tray below." />
       ) : (

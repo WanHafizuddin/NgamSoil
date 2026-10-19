@@ -17,10 +17,12 @@ export function IntakeList({
     <ul aria-label="Intake log" className="divide-y divide-soil-100">
       {sorted.map((i) => (
         <li key={i.id} className="flex items-center gap-3 py-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center">
-            {i.batchId ? (
+          {i.batchId ? (
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center">
               <span aria-hidden className="h-2.5 w-2.5 rounded-full bg-leaf-500" />
-            ) : (
+            </span>
+          ) : (
+            <label className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-lg hover:bg-leaf-100">
               <input
                 type="checkbox"
                 aria-label={`Select ${i.id}`}
@@ -28,8 +30,8 @@ export function IntakeList({
                 onChange={() => onToggle(i.id)}
                 className="h-6 w-6 cursor-pointer accent-leaf-700"
               />
-            )}
-          </div>
+            </label>
+          )}
           <div className="min-w-0 flex-1">
             <p className="flex flex-wrap items-baseline justify-between gap-x-3">
               <span className="font-bold text-soil-900">

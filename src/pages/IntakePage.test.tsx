@@ -60,6 +60,13 @@ describe('IntakePage', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'RL-B-2026-005' })).toBeInTheDocument();
   });
 
+  test('each selection checkbox sits in a 44 px tap target', () => {
+    renderApp({ route: '/intake' });
+    const target = screen.getByLabelText('Select RL-I-0021').closest('label');
+    expect(target).not.toBeNull();
+    expect(target).toHaveClass('h-11', 'w-11');
+  });
+
   test('shows an empty state without intakes', () => {
     renderApp({ route: '/intake', data: { version: 1, intakes: [], batches: [], trials: [], trees: [] } });
     expect(screen.getByText('No intakes yet')).toBeInTheDocument();

@@ -17,6 +17,12 @@ describe('BatchesPage', () => {
     expect(screen.getByText('GI 92.0%')).toBeInTheDocument();
   });
 
+  test('marks simulated GI values as sample data', () => {
+    renderApp({ route: '/batches' });
+    const tested = screen.getByRole('link', { name: /RL-B-2026-001/ });
+    expect(within(tested).getByText('Sample data')).toBeInTheDocument();
+  });
+
   test('shows an empty state', () => {
     renderApp({ route: '/batches', data: emptyData() });
     expect(screen.getByText('No batches yet')).toBeInTheDocument();

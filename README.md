@@ -40,7 +40,7 @@ There is no login. Use the **Demo role** picker in the header:
 3. **Maturity test:** upload any photo and choose **Analyse**. Edit a root length to watch the Germination Index update, then save.
 4. **Trials:** start a trial with a passed batch, and add a weekly seedling photo.
 5. **Recommendations:** see the preliminary best mix per species.
-6. **Tree tags:** open a QR code's public page, or scan it from a phone.
+6. **Tree tags:** open a QR code's public page, or scan it from a phone. Sample tags RL-T-0001 to RL-T-0006 open on any device. Tags you add are saved in your browser only, so they open only on the device that created them.
 
 ## Deploy to Vercel
 

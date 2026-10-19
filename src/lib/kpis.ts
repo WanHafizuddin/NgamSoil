@@ -1,6 +1,7 @@
 import type { AppData, Intake } from '../types';
 import { addDays, weekStart } from './dates';
 import { round1 } from './random';
+import { SEEDLINGS_PER_TRAY } from '../sim/growth';
 
 export const COMPOST_YIELD = 0.4;
 
@@ -24,7 +25,7 @@ export function computeKpis(data: AppData): Kpis {
 
   const trays = data.trials.flatMap((t) => t.trays).filter((t) => t.weekly.length > 0);
   const growing = sum(trays.map((t) => t.weekly[t.weekly.length - 1].alive));
-  const initial = sum(trays.map((t) => t.weekly[0].alive));
+  const initial = sum(trays.map((t) => Math.max(t.weekly[0].alive, SEEDLINGS_PER_TRAY)));
 
   return {
     wasteDivertedKg: sum(data.intakes.map((i) => i.weightKg)),
