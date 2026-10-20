@@ -28,6 +28,7 @@ describe.each(ROUTES)('route %s', (route, withSample, withEmpty) => {
   test('renders with empty data', async () => {
     await renderApp({ route, data: emptyData() });
     expect(screen.getByRole('heading', { level: 1, name: withEmpty })).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/NaN|Infinity/);
   });
 });
 

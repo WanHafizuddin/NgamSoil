@@ -35,6 +35,25 @@ describe('MaturityTestPage', () => {
     expect(screen.getByRole('listitem', { current: 'step' })).toHaveTextContent(passed ? 'Passed' : 'Failed');
   });
 
+  test('cannot save while a root length is blank', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    await renderApp({ route: '/batches/NS-B-2026-003/test', user });
+
+    await user.upload(screen.getByLabelText('Germination test photo'), new File(['x'], 'g.jpg', { type: 'image/jpeg' }));
+    await user.click(screen.getByRole('button', { name: 'Analyse' }));
+    await act(() => vi.advanceTimersByTimeAsync(2000));
+    const save = screen.getByRole('button', { name: 'Save result' });
+    expect(save).toBeEnabled();
+
+    const cell = screen.getByLabelText('Sample seed 1 root length (mm)');
+    await user.clear(cell);
+    expect(save).toBeDisabled();
+
+    await user.type(cell, '30');
+    expect(save).toBeEnabled();
+  });
+
   test('asks for the batch to be marked ready first', async () => {
     await renderApp({ route: '/batches/NS-B-2026-004/test' });
     expect(screen.getByText('Mark this batch ready for test first.')).toBeInTheDocument();
