@@ -4,6 +4,7 @@ import { PageHeader } from '../components/PageHeader';
 import { Panel } from '../components/Panel';
 import { StatusBadge } from '../components/StatusBadge';
 import { BatchFlow } from '../components/BatchFlow';
+import { MaturityNote } from '../components/MaturityNote';
 import { TempChart } from '../components/charts/TempChart';
 import { btnPrimary, textLink } from '../components/ui';
 import { useData } from '../state/DataContext';
@@ -86,6 +87,7 @@ export function BatchDetailPage() {
                 </span>
               </p>
               <p className="mt-1 text-sm text-soil-700">Tested {formatDate(result.date)}. A pass needs a Germination Index above 80%.</p>
+              <MaturityNote className="mt-3" />
             </Panel>
           )}
         </div>

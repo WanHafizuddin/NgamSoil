@@ -58,6 +58,13 @@ describe('BatchDetailPage', () => {
     expect(screen.getByRole('link', { name: 'Start a nursery trial' })).toHaveAttribute('href', '/trials?batch=NS-B-2026-001');
   });
 
+  test('says the GI shows maturity, not freedom from pathogens', async () => {
+    await renderApp({ route: '/batches/NS-B-2026-001' });
+    const panel = screen.getByRole('region', { name: 'Maturity test' });
+    expect(within(panel).getByText('GI 92.0%')).toBeInTheDocument();
+    expect(within(panel).getByText('This test shows compost maturity, not that it is free of pathogens.')).toBeInTheDocument();
+  });
+
   test('a batch without alerts says so', async () => {
     await renderApp({ route: '/batches/NS-B-2026-003' });
     expect(screen.getByText('No alerts for this batch')).toBeInTheDocument();
