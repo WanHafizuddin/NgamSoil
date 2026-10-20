@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import type { GerminationInput } from '../../types';
 import { computeGI, isPass } from '../../lib/gi';
 import { formatGI } from '../../lib/format';
@@ -16,11 +16,17 @@ function LengthList({
   prefix,
   values,
   onEdit,
+  errorId,
+  noteId,
 }: {
   title: string;
   prefix: string;
   values: string[];
   onEdit: (index: number, value: string) => void;
+  /** Describes each invalid cell. */
+  errorId: string;
+  /** Describes every cell in the list. */
+  noteId?: string;
 }) {
   return (
     <fieldset className="min-w-0">
@@ -29,6 +35,7 @@ function LengthList({
         {values.map((v, i) => {
           const invalid = !isValidLength(parse(v));
           const id = `${prefix}-${i}`;
+          const describedBy = [invalid && errorId, noteId].filter(Boolean).join(' ') || undefined;
           return (
             <li key={i}>
               <label htmlFor={id} className="sr-only">
@@ -47,6 +54,7 @@ function LengthList({
                   value={v}
                   onChange={(e) => onEdit(i, e.target.value)}
                   aria-invalid={invalid || undefined}
+                  aria-describedby={describedBy}
                   className="min-h-11 w-full min-w-0 rounded-lg border border-soil-200 bg-white px-2 text-right tabular-nums aria-[invalid=true]:border-ember-500 aria-[invalid=true]:ring-1 aria-[invalid=true]:ring-ember-500"
                 />
               </div>
@@ -69,6 +77,9 @@ export function GiEditor({ initial, onChange }: { initial: GerminationInput; onC
   const allValid = [...sampleNums, ...controlNums].every(isValidLength);
   const input: GerminationInput = { ...initial, rootLengthsSample: sampleNums, rootLengthsControl: controlNums };
   const gi = allValid ? computeGI(input) : null;
+  const controlZero = allValid && mean(controlNums) <= 0;
+  const errorId = useId();
+  const controlNoteId = useId();
   const resultKey = JSON.stringify(gi === null ? null : input);
 
   useEffect(() => {
@@ -107,11 +118,27 @@ export function GiEditor({ initial, onChange }: { initial: GerminationInput; onC
         GI = (germination % of sample ÷ control) × (mean root length of sample ÷ control) × 100. A pass needs more than 80%. Correct any root
         length the photo analysis misread.
       </p>
-      {!allValid && <p className={fieldError}>Enter a length of 0 mm or more</p>}
+      {!allValid && (
+        <p id={errorId} className={fieldError}>
+          Enter a length of 0 mm or more
+        </p>
+      )}
+      {controlZero && (
+        <p id={controlNoteId} className={fieldError}>
+          Control roots must be longer than 0 mm
+        </p>
+      )}
 
       <div className="grid gap-5 md:grid-cols-2">
-        <LengthList title="Sample root lengths (mm)" prefix="sample" values={sample} onEdit={edit(setSample)} />
-        <LengthList title="Control root lengths (mm)" prefix="control" values={control} onEdit={edit(setControl)} />
+        <LengthList title="Sample root lengths (mm)" prefix="sample" values={sample} onEdit={edit(setSample)} errorId={errorId} />
+        <LengthList
+          title="Control root lengths (mm)"
+          prefix="control"
+          values={control}
+          onEdit={edit(setControl)}
+          errorId={errorId}
+          noteId={controlZero ? controlNoteId : undefined}
+        />
       </div>
     </div>
   );
