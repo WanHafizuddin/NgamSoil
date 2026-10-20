@@ -5,8 +5,8 @@ import { renderApp } from '../test/render';
 const card = (name: string) => within(screen.getByRole('article', { name }));
 
 describe('RecommendationsPage', () => {
-  test('recommends 25% compost for Tembusu', () => {
-    renderApp({ route: '/recommendations' });
+  test('recommends 25% compost for Tembusu', async () => {
+    await renderApp({ route: '/recommendations' });
     const tembusu = card('Tembusu');
     expect(tembusu.getByText('Best mix: 25% compost')).toBeInTheDocument();
     expect(tembusu.getByText('Preliminary')).toBeInTheDocument();
@@ -16,19 +16,19 @@ describe('RecommendationsPage', () => {
     expect(tembusu.getAllByRole('listitem')).toHaveLength(3);
   });
 
-  test('recommends 25% compost for Meranti', () => {
-    renderApp({ route: '/recommendations' });
+  test('recommends 25% compost for Meranti', async () => {
+    await renderApp({ route: '/recommendations' });
     expect(card('Meranti').getByText('Best mix: 25% compost')).toBeInTheDocument();
   });
 
-  test('species without trials say so', () => {
-    renderApp({ route: '/recommendations' });
+  test('species without trials say so', async () => {
+    await renderApp({ route: '/recommendations' });
     expect(card('Angsana').getByText('No trial data yet')).toBeInTheDocument();
     expect(card('Pokok Kelat').getByText('No trial data yet')).toBeInTheDocument();
   });
 
-  test('explains the rule and its limits', () => {
-    renderApp({ route: '/recommendations' });
+  test('explains the rule and its limits', async () => {
+    await renderApp({ route: '/recommendations' });
     expect(screen.getByText('Updates as more batches and trials are added.')).toBeInTheDocument();
     expect(screen.getByText(/height growth 50%, leaf health 30%, survival 20%/)).toBeInTheDocument();
     expect(screen.getByText(/preliminary until the 3-month Elmina nursery pilot ends/)).toBeInTheDocument();

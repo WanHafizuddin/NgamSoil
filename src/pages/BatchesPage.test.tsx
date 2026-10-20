@@ -6,8 +6,8 @@ import { formatKg } from '../lib/format';
 import { TempChart } from '../components/charts/TempChart';
 
 describe('BatchesPage', () => {
-  test('lists every batch with its status', () => {
-    renderApp({ route: '/batches' });
+  test('lists every batch with its status', async () => {
+    await renderApp({ route: '/batches' });
     for (const id of ['NS-B-2026-001', 'NS-B-2026-002', 'NS-B-2026-003', 'NS-B-2026-004']) {
       expect(screen.getByRole('link', { name: new RegExp(id) })).toHaveAttribute('href', `/batches/${id}`);
     }
@@ -17,22 +17,22 @@ describe('BatchesPage', () => {
     expect(screen.getByText('GI 92.0%')).toBeInTheDocument();
   });
 
-  test('marks simulated GI values as sample data', () => {
-    renderApp({ route: '/batches' });
+  test('marks simulated GI values as sample data', async () => {
+    await renderApp({ route: '/batches' });
     const tested = screen.getByRole('link', { name: /NS-B-2026-001/ });
     expect(within(tested).getByText('Sample data')).toBeInTheDocument();
   });
 
-  test('shows an empty state', () => {
-    renderApp({ route: '/batches', data: emptyData() });
+  test('shows an empty state', async () => {
+    await renderApp({ route: '/batches', data: emptyData() });
     expect(screen.getByText('No batches yet')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Log an intake' })).toHaveAttribute('href', '/intake');
   });
 });
 
 describe('BatchDetailPage', () => {
-  test('shows alerts and total input for the composting batch', () => {
-    renderApp({ route: '/batches/NS-B-2026-004' });
+  test('shows alerts and total input for the composting batch', async () => {
+    await renderApp({ route: '/batches/NS-B-2026-004' });
     const data = buildSampleData();
     const kg = data.intakes.filter((i) => i.batchId === 'NS-B-2026-004').reduce((s, i) => s + i.weightKg, 0);
     expect(screen.getByText(/Too cold/)).toBeInTheDocument();
@@ -43,7 +43,7 @@ describe('BatchDetailPage', () => {
   });
 
   test('marks a batch ready for test', async () => {
-    const { user } = renderApp({ route: '/batches/NS-B-2026-004' });
+    const { user } = await renderApp({ route: '/batches/NS-B-2026-004' });
     expect(screen.getByRole('listitem', { current: 'step' })).toHaveTextContent('Composting');
     await user.click(screen.getByRole('button', { name: 'Mark ready for test' }));
     expect(screen.getByRole('listitem', { current: 'step' })).toHaveTextContent('Ready for test');
@@ -51,15 +51,15 @@ describe('BatchDetailPage', () => {
     expect(screen.queryByRole('button', { name: 'Mark ready for test' })).not.toBeInTheDocument();
   });
 
-  test('shows the saved maturity test', () => {
-    renderApp({ route: '/batches/NS-B-2026-001' });
+  test('shows the saved maturity test', async () => {
+    await renderApp({ route: '/batches/NS-B-2026-001' });
     expect(screen.getByText('GI 92.0%')).toBeInTheDocument();
     expect(screen.getByText('Pass')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Start a nursery trial' })).toHaveAttribute('href', '/trials?batch=NS-B-2026-001');
   });
 
-  test('a batch without alerts says so', () => {
-    renderApp({ route: '/batches/NS-B-2026-003' });
+  test('a batch without alerts says so', async () => {
+    await renderApp({ route: '/batches/NS-B-2026-003' });
     expect(screen.getByText('No alerts for this batch')).toBeInTheDocument();
   });
 });

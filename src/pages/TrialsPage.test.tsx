@@ -12,14 +12,14 @@ const lastRowCells = () => {
 };
 
 describe('TrialsPage', () => {
-  test('lists the sample trials', () => {
-    renderApp({ route: '/trials' });
+  test('lists the sample trials', async () => {
+    await renderApp({ route: '/trials' });
     expect(screen.getByRole('link', { name: /Meranti/ })).toHaveAttribute('href', '/trials/NS-TR-001');
     expect(screen.getByRole('link', { name: /Tembusu/ })).toHaveAttribute('href', '/trials/NS-TR-002');
   });
 
-  test('offers only batches that passed the maturity test', () => {
-    renderApp({ route: '/trials?batch=NS-B-2026-001' });
+  test('offers only batches that passed the maturity test', async () => {
+    await renderApp({ route: '/trials?batch=NS-B-2026-001' });
     const select = screen.getByLabelText('Compost batch');
     expect(select).toHaveValue('NS-B-2026-001');
     const options = within(select).getAllByRole('option').map((o) => o.textContent);
@@ -27,17 +27,17 @@ describe('TrialsPage', () => {
   });
 
   test('creates a trial with three trays', async () => {
-    const { user } = renderApp({ route: '/trials' });
+    const { user } = await renderApp({ route: '/trials' });
     await user.selectOptions(screen.getByLabelText('Species'), 'Angsana');
     await user.click(screen.getByRole('button', { name: 'Start trial' }));
 
-    expect(screen.getByRole('heading', { level: 1, name: 'Angsana trial' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Angsana trial' })).toBeInTheDocument();
     expect(screen.getAllByRole('tab').map((t) => t.textContent)).toEqual(['0% (control)', '25% compost', '50% compost']);
     expect(screen.getAllByText('No readings yet').length).toBeGreaterThan(0);
   });
 
-  test('explains when no batch has passed', () => {
-    renderApp({ route: '/trials', data: emptyData() });
+  test('explains when no batch has passed', async () => {
+    await renderApp({ route: '/trials', data: emptyData() });
     expect(screen.getByText('No trials yet')).toBeInTheDocument();
     expect(screen.getByText('No passed batches yet. Run a maturity test first.')).toBeInTheDocument();
   });
@@ -47,7 +47,7 @@ describe('TrialDetailPage', () => {
   test('adds a weekly record from a seedling photo', async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
-    renderApp({ route: '/trials/NS-TR-002', user });
+    await renderApp({ route: '/trials/NS-TR-002', user });
 
     await user.click(screen.getByRole('tab', { name: '25% compost' }));
     await user.upload(screen.getByLabelText('Weekly seedling photo'), new File(['x'], 's.jpg', { type: 'image/jpeg' }));
@@ -59,7 +59,7 @@ describe('TrialDetailPage', () => {
   });
 
   test('a death log lowers the alive count', async () => {
-    const { user } = renderApp({ route: '/trials/NS-TR-002' });
+    const { user } = await renderApp({ route: '/trials/NS-TR-002' });
     await user.click(screen.getByRole('tab', { name: '25% compost' }));
     expect(lastRowCells()[3]).toHaveTextContent('12');
 
@@ -73,7 +73,7 @@ describe('TrialDetailPage', () => {
   });
 
   test('a pest log needs a note', async () => {
-    const { user } = renderApp({ route: '/trials/NS-TR-002' });
+    const { user } = await renderApp({ route: '/trials/NS-TR-002' });
     await user.selectOptions(screen.getByLabelText('Log type'), 'Pest');
     await user.click(screen.getByRole('button', { name: 'Add log' }));
     expect(screen.getByText('Describe what you saw')).toBeInTheDocument();

@@ -14,7 +14,7 @@ describe('MaturityTestPage', () => {
   test('uploads, analyses and saves a result', async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
-    renderApp({ route: '/batches/NS-B-2026-003/test', user });
+    await renderApp({ route: '/batches/NS-B-2026-003/test', user });
 
     expect(screen.getByText(NOTE)).toBeInTheDocument();
     const analyse = screen.getByRole('button', { name: 'Analyse' });
@@ -31,18 +31,18 @@ describe('MaturityTestPage', () => {
 
     await user.click(screen.getByRole('button', { name: 'Save result' }));
     const passed = isPass(computeGI(simulateGerminationAnalysis(hashString('NS-B-2026-003'))));
-    expect(screen.getByRole('heading', { level: 1, name: 'NS-B-2026-003' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'NS-B-2026-003' })).toBeInTheDocument();
     expect(screen.getByRole('listitem', { current: 'step' })).toHaveTextContent(passed ? 'Passed' : 'Failed');
   });
 
-  test('asks for the batch to be marked ready first', () => {
-    renderApp({ route: '/batches/NS-B-2026-004/test' });
+  test('asks for the batch to be marked ready first', async () => {
+    await renderApp({ route: '/batches/NS-B-2026-004/test' });
     expect(screen.getByText('Mark this batch ready for test first.')).toBeInTheDocument();
     expect(screen.getByText(NOTE)).toBeInTheDocument();
   });
 
-  test('shows the saved result for a tested batch', () => {
-    renderApp({ route: '/batches/NS-B-2026-001/test' });
+  test('shows the saved result for a tested batch', async () => {
+    await renderApp({ route: '/batches/NS-B-2026-001/test' });
     expect(screen.getByText('GI 92.0%')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Analyse' })).not.toBeInTheDocument();
   });

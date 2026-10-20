@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { BottomNav, SideNav } from './Nav';
 import { Logo } from './Logo';
@@ -32,7 +33,9 @@ export function Layout() {
         </header>
 
         <main className="mx-auto max-w-5xl px-4 pb-28 pt-6 md:px-8 md:pb-12">
-          {canAccess(role, pathname) ? <Outlet /> : <RoleGate />}
+          <Suspense fallback={<p role="status" className="text-soil-700">Loading…</p>}>
+            {canAccess(role, pathname) ? <Outlet /> : <RoleGate />}
+          </Suspense>
         </main>
       </div>
 

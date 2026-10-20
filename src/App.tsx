@@ -1,17 +1,25 @@
+import { lazy, type ComponentType } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout';
-import { AboutPage } from './pages/AboutPage';
-import { BatchDetailPage } from './pages/BatchDetailPage';
-import { BatchesPage } from './pages/BatchesPage';
-import { DashboardPage } from './pages/DashboardPage';
-import { IntakePage } from './pages/IntakePage';
-import { MaturityTestPage } from './pages/MaturityTestPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { PublicTreePage } from './pages/PublicTreePage';
-import { RecommendationsPage } from './pages/RecommendationsPage';
-import { TreesPage } from './pages/TreesPage';
-import { TrialDetailPage } from './pages/TrialDetailPage';
-import { TrialsPage } from './pages/TrialsPage';
+
+// Staff pages load on demand so the public tree page, opened from a QR tag on
+// a phone, does not download the chart and QR code libraries.
+function lazyPage<K extends string>(load: () => Promise<Record<K, ComponentType>>, name: K) {
+  return lazy(() => load().then((m) => ({ default: m[name] })));
+}
+
+const AboutPage = lazyPage(() => import('./pages/AboutPage'), 'AboutPage');
+const BatchDetailPage = lazyPage(() => import('./pages/BatchDetailPage'), 'BatchDetailPage');
+const BatchesPage = lazyPage(() => import('./pages/BatchesPage'), 'BatchesPage');
+const DashboardPage = lazyPage(() => import('./pages/DashboardPage'), 'DashboardPage');
+const IntakePage = lazyPage(() => import('./pages/IntakePage'), 'IntakePage');
+const MaturityTestPage = lazyPage(() => import('./pages/MaturityTestPage'), 'MaturityTestPage');
+const RecommendationsPage = lazyPage(() => import('./pages/RecommendationsPage'), 'RecommendationsPage');
+const TreesPage = lazyPage(() => import('./pages/TreesPage'), 'TreesPage');
+const TrialDetailPage = lazyPage(() => import('./pages/TrialDetailPage'), 'TrialDetailPage');
+const TrialsPage = lazyPage(() => import('./pages/TrialsPage'), 'TrialsPage');
 
 export function AppRoutes() {
   return (
