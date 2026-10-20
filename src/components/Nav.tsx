@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Ellipsis } from 'lucide-react';
 import { navFor } from '../state/access';
@@ -33,12 +33,30 @@ export function BottomNav() {
   const { role } = useRole();
   const { pathname } = useLocation();
   const [moreOpen, setMoreOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
   const items = navFor(role);
   const overflow = items.length > MAX_TABS;
   const tabs = overflow ? items.slice(0, MAX_TABS - 1) : items;
   const more = overflow ? items.slice(MAX_TABS - 1) : [];
 
   useEffect(() => setMoreOpen(false), [pathname]);
+
+  // Close the More menu on a click outside the nav, or on Escape from anywhere.
+  useEffect(() => {
+    if (!moreOpen) return;
+    const onPointerDown = (e: Event) => {
+      if (!navRef.current?.contains(e.target as Node)) setMoreOpen(false);
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMoreOpen(false);
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [moreOpen]);
 
   const tabClass = (active: boolean) =>
     `flex min-h-14 flex-1 flex-col items-center justify-center gap-0.5 text-[11px] font-bold ${
@@ -47,11 +65,12 @@ export function BottomNav() {
 
   return (
     <nav
+      ref={navRef}
       aria-label="Main"
       className="fixed inset-x-0 bottom-0 z-30 border-t border-soil-200 bg-soil-50/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden print:hidden"
     >
       {moreOpen && (
-        <ul className="absolute bottom-full right-2 mb-2 w-56 rounded-2xl border border-soil-200 bg-white p-2 shadow-lg">
+        <ul aria-label="More pages" className="absolute bottom-full right-2 mb-2 w-56 rounded-2xl border border-soil-200 bg-white p-2 shadow-lg">
           {more.map(({ to, label, icon: Icon }) => (
             <li key={to}>
               <NavLink to={to} className="flex min-h-11 items-center gap-3 rounded-xl px-3 font-bold text-soil-900 hover:bg-soil-100">
@@ -80,7 +99,6 @@ export function BottomNav() {
             type="button"
             aria-expanded={moreOpen}
             onClick={() => setMoreOpen((o) => !o)}
-            onKeyDown={(e) => e.key === 'Escape' && setMoreOpen(false)}
             className={tabClass(more.some((m) => pathname.startsWith(m.to)))}
           >
             <span className="rounded-full px-4 py-1">
