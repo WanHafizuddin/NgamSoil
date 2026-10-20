@@ -77,5 +77,17 @@ describe('TrialDetailPage', () => {
     await user.selectOptions(screen.getByLabelText('Log type'), 'Pest');
     await user.click(screen.getByRole('button', { name: 'Add log' }));
     expect(screen.getByText('Describe what you saw')).toBeInTheDocument();
+    expect(screen.getByLabelText('Note')).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  test('a death log with no seedlings flags only the number field', async () => {
+    const { user } = await renderApp({ route: '/trials/NS-TR-002' });
+    await user.selectOptions(screen.getByLabelText('Log type'), 'Death');
+    await user.clear(screen.getByLabelText('Number of seedlings'));
+    await user.type(screen.getByLabelText('Number of seedlings'), '0');
+    await user.click(screen.getByRole('button', { name: 'Add log' }));
+    expect(screen.getByText('Enter at least 1 seedling')).toBeInTheDocument();
+    expect(screen.getByLabelText('Number of seedlings')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByLabelText('Note')).not.toHaveAttribute('aria-invalid');
   });
 });
