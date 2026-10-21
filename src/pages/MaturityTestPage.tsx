@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Info } from 'lucide-react';
+import { MaturityNote } from '../components/MaturityNote';
 import { PageHeader } from '../components/PageHeader';
 import { Panel } from '../components/Panel';
 import { PhotoAnalyser } from '../components/PhotoAnalyser';
@@ -13,15 +13,6 @@ import { isPass } from '../lib/gi';
 import { nowIso } from '../lib/dates';
 import { formatDate, formatGI } from '../lib/format';
 import type { GerminationInput } from '../types';
-
-function MaturityNote() {
-  return (
-    <p className="mb-4 flex gap-2 rounded-xl border border-water-500/30 bg-water-100 p-3 text-sm text-water-700">
-      <Info aria-hidden className="mt-0.5 h-4 w-4 shrink-0" />
-      <span>This test shows compost maturity, not that it is free of pathogens.</span>
-    </p>
-  );
-}
 
 export function MaturityTestPage() {
   const { id } = useParams();
@@ -54,7 +45,7 @@ export function MaturityTestPage() {
     return (
       <>
         {header}
-        <MaturityNote />
+        <MaturityNote className="mb-4" />
         <Panel title="Not ready yet">
           <p className="text-soil-700">Mark this batch ready for test first.</p>
           <Link to={`/batches/${batch.id}`} className={`${textLink} mt-2 inline-block`}>
@@ -70,7 +61,7 @@ export function MaturityTestPage() {
     return (
       <>
         {header}
-        <MaturityNote />
+        <MaturityNote className="mb-4" />
         <Panel title="Saved result" sample>
           {saved ? (
             <p className="text-soil-900">
@@ -98,7 +89,7 @@ export function MaturityTestPage() {
   return (
     <>
       {header}
-      <MaturityNote />
+      <MaturityNote className="mb-4" />
       {analysis === null ? (
         <Panel title="Germination photo" caption="Photograph both dishes after 5 days, side by side.">
           <PhotoAnalyser inputLabel="Germination test photo" onAnalysed={() => setAnalysis(simulateGerminationAnalysis(hashString(batch.id)))} />

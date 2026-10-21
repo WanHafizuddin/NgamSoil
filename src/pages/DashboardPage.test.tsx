@@ -10,26 +10,26 @@ afterEach(() => vi.restoreAllMocks());
 const alertLinks = () => within(screen.getByRole('list', { name: 'Alerts' })).getAllByRole('link');
 
 describe('DashboardPage', () => {
-  test('shows KPIs from the sample data', () => {
-    renderApp();
+  test('shows KPIs from the sample data', async () => {
+    await renderApp();
     const k = computeKpis(buildSampleData());
     expect(screen.getByText(formatKg(k.wasteDivertedKg))).toBeInTheDocument();
     expect(screen.getByText(formatKg(k.estimatedSoilSavedKg))).toBeInTheDocument();
     expect(screen.getByText('2 active · 1 passed · 1 failed')).toBeInTheDocument();
-    expect(screen.getByText('64')).toBeInTheDocument();
-    expect(screen.getByText('89%')).toBeInTheDocument();
+    expect(screen.getByText('99')).toBeInTheDocument();
+    expect(screen.getByText('92%')).toBeInTheDocument();
     expect(screen.getAllByText('Sample data').length).toBeGreaterThan(0);
   });
 
-  test('lists active alerts linked to their batch', () => {
-    renderApp();
+  test('lists active alerts linked to their batch', async () => {
+    await renderApp();
     expect(alertLinks()).toHaveLength(2);
     for (const link of alertLinks()) expect(link).toHaveAttribute('href', '/batches/NS-B-2026-004');
   });
 
   test('clear and reset the data', async () => {
     vi.spyOn(window, 'confirm').mockReturnValue(true);
-    const { user } = renderApp();
+    const { user } = await renderApp();
 
     await user.click(screen.getByRole('button', { name: 'Clear all data' }));
     expect(screen.getAllByText('0 kg')).toHaveLength(2);
@@ -43,7 +43,7 @@ describe('DashboardPage', () => {
 
   test('cancelling the confirm keeps the data', async () => {
     vi.spyOn(window, 'confirm').mockReturnValue(false);
-    const { user } = renderApp();
+    const { user } = await renderApp();
     await user.click(screen.getByRole('button', { name: 'Clear all data' }));
     expect(alertLinks()).toHaveLength(2);
   });

@@ -48,10 +48,11 @@ describe('buildSampleData', () => {
     expect(activeAlerts(d.batches)).toHaveLength(2);
   });
 
-  test('has 2 trials with 3 trays of 7 weekly records', () => {
+  test('has 3 trials with 3 trays of 7 weekly records', () => {
     expect(d.trials.map((t) => [t.id, t.species])).toEqual([
       ['NS-TR-001', 'meranti'],
       ['NS-TR-002', 'tembusu'],
+      ['NS-TR-003', 'angsana'],
     ]);
     for (const t of d.trials) {
       expect(t.trays.map((tr) => tr.id)).toEqual([`${t.id}-M0`, `${t.id}-M25`, `${t.id}-M50`]);
@@ -73,11 +74,16 @@ describe('buildSampleData', () => {
     expect(s[25] - s[0]).toBeLessThan(6);
     expect(s[0] - s[50]).toBeGreaterThanOrEqual(15);
 
-    expect(recommendForSpecies(d.trials, 'angsana')).toBeNull();
+    const ang = recommendForSpecies(d.trials, 'angsana')!;
+    expect(ang.ranking.map((m) => m.mixPct)).toEqual([50, 25, 0]);
+    const a = Object.fromEntries(ang.ranking.map((m) => [m.mixPct, m.score]));
+    expect(a[50] - a[25]).toBeGreaterThanOrEqual(2);
+
+    expect(recommendForSpecies(d.trials, 'kelat')).toBeNull();
   });
 
   test('KPIs match the story', () => {
-    expect(computeKpis(d)).toMatchObject({ batchesActive: 2, batchesPassed: 1, batchesFailed: 1, seedlingsGrowing: 64 });
+    expect(computeKpis(d)).toMatchObject({ batchesActive: 2, batchesPassed: 1, batchesFailed: 1, seedlingsGrowing: 99 });
   });
 
   test('has 6 tagged trees', () => {

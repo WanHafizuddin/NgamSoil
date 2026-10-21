@@ -48,6 +48,31 @@ describe('GiEditor', () => {
     expect(onChange).toHaveBeenLastCalledWith(null);
   });
 
+  test('links the error message to the invalid cells only', async () => {
+    const user = userEvent.setup();
+    render(<GiEditor initial={PASS} onChange={() => {}} />);
+    const cell = screen.getByLabelText('Control seed 3 root length (mm)');
+    await user.clear(cell);
+    expect(cell).toHaveAccessibleDescription('Enter a length of 0 mm or more');
+    expect(screen.getByLabelText('Control seed 4 root length (mm)')).not.toHaveAccessibleDescription();
+  });
+
+  test('explains why GI is blank when every control root is 0 mm', async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(<GiEditor initial={PASS} onChange={onChange} />);
+    for (let i = 1; i <= CONTROL.length; i++) {
+      const cell = screen.getByLabelText(`Control seed ${i} root length (mm)`);
+      await user.clear(cell);
+      await user.type(cell, '0');
+    }
+    expect(screen.getByText('—')).toBeInTheDocument();
+    expect(screen.getByText('Control roots must be longer than 0 mm')).toBeInTheDocument();
+    expect(screen.getByLabelText('Control seed 1 root length (mm)')).toHaveAccessibleDescription('Control roots must be longer than 0 mm');
+    expect(screen.getByLabelText('Sample seed 1 root length (mm)')).not.toHaveAccessibleDescription();
+    expect(onChange).toHaveBeenLastCalledWith(null);
+  });
+
   test('flags a negative value', async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();

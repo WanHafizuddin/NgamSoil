@@ -19,6 +19,12 @@ describe('loadData', () => {
     expect(loadData()).toEqual(buildSampleData());
   });
 
+  test('replaces data saved before the Angsana sample trial and removes it', () => {
+    localStorage.setItem('ngamsoil:data:v1', JSON.stringify(emptyData()));
+    expect(loadData()).toEqual(buildSampleData());
+    expect(localStorage.getItem('ngamsoil:data:v1')).toBeNull();
+  });
+
   test('round-trips saved data', () => {
     saveData(emptyData());
     expect(loadData()).toEqual(emptyData());

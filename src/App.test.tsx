@@ -20,40 +20,41 @@ const ROUTES: [string, string, string][] = [
 ];
 
 describe.each(ROUTES)('route %s', (route, withSample, withEmpty) => {
-  test('renders with sample data', () => {
-    renderApp({ route });
+  test('renders with sample data', async () => {
+    await renderApp({ route });
     expect(screen.getByRole('heading', { level: 1, name: withSample })).toBeInTheDocument();
   });
 
-  test('renders with empty data', () => {
-    renderApp({ route, data: emptyData() });
+  test('renders with empty data', async () => {
+    await renderApp({ route, data: emptyData() });
     expect(screen.getByRole('heading', { level: 1, name: withEmpty })).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/NaN|Infinity/);
   });
 });
 
 describe('roles', () => {
-  test('admin sees every module in the navigation', () => {
-    renderApp();
+  test('admin sees every module in the navigation', async () => {
+    await renderApp();
     expect(screen.getAllByRole('link', { name: 'Recommendations' }).length).toBeGreaterThan(0);
     expect(screen.getAllByRole('link', { name: 'Tree tags' }).length).toBeGreaterThan(0);
   });
 
-  test('staff cannot open the dashboard', () => {
-    renderApp({ role: 'staff' });
+  test('staff cannot open the dashboard', async () => {
+    await renderApp({ role: 'staff' });
     expect(screen.getByRole('heading', { level: 1, name: 'Not available for this role' })).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Dashboard' })).not.toBeInTheDocument();
     expect(screen.getAllByRole('link', { name: 'Intake' }).length).toBeGreaterThan(0);
   });
 
-  test('public is pointed to a tree page', () => {
-    renderApp({ role: 'public', route: '/intake' });
+  test('public is pointed to a tree page', async () => {
+    await renderApp({ role: 'public', route: '/intake' });
     expect(screen.getByRole('heading', { level: 1, name: 'Not available for this role' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Open an example tree page' })).toHaveAttribute('href', '/tree/NS-T-0001');
   });
 
   test('switching role goes to that role’s home screen', async () => {
-    const { user } = renderApp();
+    const { user } = await renderApp();
     await user.selectOptions(screen.getByLabelText('Demo role'), 'Staff (nursery)');
-    expect(screen.getByRole('heading', { level: 1, name: 'Waste intake' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Waste intake' })).toBeInTheDocument();
   });
 });

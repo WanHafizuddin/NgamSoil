@@ -11,16 +11,16 @@ export function TrayLogForm({ trialId, trayId }: { trialId: string; trayId: stri
   const [kind, setKind] = useState<TrayLogKind>('watering');
   const [note, setNote] = useState('');
   const [count, setCount] = useState('1');
-  const [error, setError] = useState('');
+  const [error, setError] = useState<{ field: 'note' | 'count'; message: string } | null>(null);
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
     const text = note.trim() || DEFAULT_NOTE[kind];
     const deaths = Number(count);
-    if (!text) return setError('Describe what you saw');
-    if (kind === 'death' && !(Number.isInteger(deaths) && deaths >= 1)) return setError('Enter at least 1 seedling');
+    if (!text) return setError({ field: 'note', message: 'Describe what you saw' });
+    if (kind === 'death' && !(Number.isInteger(deaths) && deaths >= 1)) return setError({ field: 'count', message: 'Enter at least 1 seedling' });
 
-    setError('');
+    setError(null);
     dispatch({
       type: 'addTrayLog',
       trialId,
@@ -58,6 +58,7 @@ export function TrayLogForm({ trialId, trayId }: { trialId: string; trayId: stri
               className={fieldInput}
               value={count}
               onChange={(e) => setCount(e.target.value)}
+              aria-invalid={error?.field === 'count' || undefined}
             />
           </div>
         )}
@@ -72,10 +73,10 @@ export function TrayLogForm({ trialId, trayId }: { trialId: string; trayId: stri
           value={note}
           placeholder={kind === 'pest' ? 'What you saw and what you did' : DEFAULT_NOTE[kind]}
           onChange={(e) => setNote(e.target.value)}
-          aria-invalid={error ? true : undefined}
+          aria-invalid={error?.field === 'note' || undefined}
         />
       </div>
-      {error && <p className={fieldError}>{error}</p>}
+      {error && <p className={fieldError}>{error.message}</p>}
       <button type="submit" className={btnSecondary}>
         Add log
       </button>

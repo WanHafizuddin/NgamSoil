@@ -17,4 +17,9 @@
     outline: 3px solid #4c8a5e;
     outline-offset: 2px;
   }
+
+  /* leaf-500 is under 3:1 on the leaf-900 header and sidebar, so use leaf-100 there. */
+  .on-dark :focus-visible {
+    outline-color: #e3efe2;
+  }
 }

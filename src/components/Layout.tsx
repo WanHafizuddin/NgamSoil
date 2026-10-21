@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { BottomNav, SideNav } from './Nav';
 import { Logo } from './Logo';
@@ -13,7 +14,7 @@ export function Layout() {
 
   return (
     <div className="min-h-screen md:grid md:grid-cols-[15rem_minmax(0,1fr)]">
-      <aside className="hidden bg-leaf-900 text-soil-50 md:sticky md:top-0 md:flex md:h-screen md:flex-col md:gap-8 md:px-4 md:py-6 print:hidden">
+      <aside className="on-dark hidden bg-leaf-900 text-soil-50 md:sticky md:top-0 md:flex md:h-screen md:flex-col md:gap-8 md:px-4 md:py-6 print:hidden">
         <Link to="/" className="rounded-lg px-2">
           <Logo tagline />
         </Link>
@@ -21,7 +22,7 @@ export function Layout() {
       </aside>
 
       <div className="min-w-0">
-        <header className="sticky top-0 z-20 bg-leaf-900 text-soil-50 print:hidden">
+        <header className="on-dark sticky top-0 z-20 bg-leaf-900 text-soil-50 print:hidden">
           <div className="flex items-center justify-between gap-3 px-4 py-2 md:justify-end md:px-8">
             <Link to="/" className="rounded-lg md:hidden">
               <Logo />
@@ -32,7 +33,9 @@ export function Layout() {
         </header>
 
         <main className="mx-auto max-w-5xl px-4 pb-28 pt-6 md:px-8 md:pb-12">
-          {canAccess(role, pathname) ? <Outlet /> : <RoleGate />}
+          <Suspense fallback={<p role="status" className="text-soil-700">Loading…</p>}>
+            {canAccess(role, pathname) ? <Outlet /> : <RoleGate />}
+          </Suspense>
         </main>
       </div>
 

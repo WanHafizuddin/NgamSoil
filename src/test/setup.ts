@@ -1,6 +1,9 @@
 import '@testing-library/jest-dom/vitest';
-import { cleanup } from '@testing-library/react';
+import { cleanup, configure } from '@testing-library/react';
 import { afterEach } from 'vitest';
+
+// Route pages are lazy; their first import can take several seconds in a busy test run.
+configure({ asyncUtilTimeout: 10_000 });
 
 class NoopResizeObserver {
   observe() {}

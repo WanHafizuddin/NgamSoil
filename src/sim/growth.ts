@@ -35,7 +35,7 @@ export const GROWTH_PROFILES: Record<SpeciesId, GrowthProfile> = {
     mixes: {
       0: { cmPerWeek: 2.4, leafHealth: 76, deaths: 1 },
       25: { cmPerWeek: 2.8, leafHealth: 82, deaths: 0 },
-      50: { cmPerWeek: 3.0, leafHealth: 80, deaths: 1 },
+      50: { cmPerWeek: 3.0, leafHealth: 84, deaths: 0 },
     },
   },
   kelat: {
