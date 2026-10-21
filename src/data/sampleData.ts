@@ -95,6 +95,7 @@ const TRIAL_START = '2026-09-07';
 const TRIAL_PLAN: { id: string; species: SpeciesId }[] = [
   { id: 'NS-TR-001', species: 'meranti' },
   { id: 'NS-TR-002', species: 'tembusu' },
+  { id: 'NS-TR-003', species: 'angsana' },
 ];
 
 const PLANTED = '2026-10-16';

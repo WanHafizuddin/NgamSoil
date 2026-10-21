@@ -21,9 +21,21 @@ describe('RecommendationsPage', () => {
     expect(card('Meranti').getByText('Best mix: 25% compost')).toBeInTheDocument();
   });
 
+  test('recommends 50% compost for Angsana', async () => {
+    await renderApp({ route: '/recommendations' });
+    const angsana = card('Angsana');
+    expect(angsana.getByText('Best mix: 50% compost')).toBeInTheDocument();
+    expect(angsana.getByText(/^50% compost grew .* vs .* for the 0% control\.$/)).toBeInTheDocument();
+    const ranking = angsana.getByRole('list', { name: 'Angsana mix ranking' });
+    expect(within(ranking).getAllByRole('listitem').map((li) => li.firstElementChild?.firstElementChild?.textContent)).toEqual([
+      '50% compost',
+      '25% compost',
+      '0% (control)',
+    ]);
+  });
+
   test('species without trials say so', async () => {
     await renderApp({ route: '/recommendations' });
-    expect(card('Angsana').getByText('No trial data yet')).toBeInTheDocument();
     expect(card('Pokok Kelat').getByText('No trial data yet')).toBeInTheDocument();
   });
 
