@@ -2,9 +2,9 @@ import type { AppData, Role } from '../types';
 import { buildSampleData } from '../data/sampleData';
 
 // Bump the key when the sample data changes, so browsers drop older saves and show
-// the new sample. v2 added the Angsana trial.
-export const STORAGE_KEY = 'ngamsoil:data:v2';
-const OLD_STORAGE_KEYS = ['ngamsoil:data:v1'];
+// the new sample. v2 added the Angsana trial; v3 added the 75% tray and species-specific mixes.
+export const STORAGE_KEY = 'ngamsoil:data:v3';
+const OLD_STORAGE_KEYS = ['ngamsoil:data:v1', 'ngamsoil:data:v2'];
 export const ROLE_KEY = 'ngamsoil:role';
 const ROLES: Role[] = ['admin', 'staff', 'public'];
 
