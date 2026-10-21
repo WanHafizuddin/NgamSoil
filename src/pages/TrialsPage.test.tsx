@@ -26,13 +26,13 @@ describe('TrialsPage', () => {
     expect(options).toEqual(['NS-B-2026-001 · GI 92.0%']);
   });
 
-  test('creates a trial with three trays', async () => {
+  test('creates a trial with four trays', async () => {
     const { user } = await renderApp({ route: '/trials' });
     await user.selectOptions(screen.getByLabelText('Species'), 'Angsana');
     await user.click(screen.getByRole('button', { name: 'Start trial' }));
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Angsana trial' })).toBeInTheDocument();
-    expect(screen.getAllByRole('tab').map((t) => t.textContent)).toEqual(['0% (control)', '25% compost', '50% compost']);
+    expect(screen.getAllByRole('tab').map((t) => t.textContent)).toEqual(['0% (control)', '25% compost', '50% compost', '75% compost']);
     expect(screen.getAllByText('No readings yet').length).toBeGreaterThan(0);
   });
 

@@ -47,7 +47,7 @@ export function TrialDetailPage() {
         <GrowthChart trays={trial.trays} />
       </Panel>
 
-      <div role="tablist" aria-label="Trays" className="mb-4 grid grid-cols-3 gap-1 rounded-full bg-soil-100 p-1" onKeyDown={onTabKey}>
+      <div role="tablist" aria-label="Trays" className="mb-4 grid auto-cols-fr grid-flow-col gap-1 rounded-full bg-soil-100 p-1" onKeyDown={onTabKey}>
         {trial.trays.map((t, i) => (
           <button
             key={t.id}

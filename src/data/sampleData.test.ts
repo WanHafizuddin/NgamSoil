@@ -48,14 +48,14 @@ describe('buildSampleData', () => {
     expect(activeAlerts(d.batches)).toHaveLength(2);
   });
 
-  test('has 3 trials with 3 trays of 7 weekly records', () => {
+  test('has 3 trials with 4 trays of 7 weekly records', () => {
     expect(d.trials.map((t) => [t.id, t.species])).toEqual([
       ['NS-TR-001', 'meranti'],
       ['NS-TR-002', 'tembusu'],
       ['NS-TR-003', 'angsana'],
     ]);
     for (const t of d.trials) {
-      expect(t.trays.map((tr) => tr.id)).toEqual([`${t.id}-M0`, `${t.id}-M25`, `${t.id}-M50`]);
+      expect(t.trays.map((tr) => tr.id)).toEqual([`${t.id}-M0`, `${t.id}-M25`, `${t.id}-M50`, `${t.id}-M75`]);
       for (const tr of t.trays) {
         expect(tr.weekly).toHaveLength(7);
         expect(tr.moisture.length).toBeGreaterThan(100);
@@ -65,17 +65,18 @@ describe('buildSampleData', () => {
 
   test('recommendation ranking for the sample data', () => {
     const tem = recommendForSpecies(d.trials, 'tembusu')!;
-    expect(tem.ranking.map((m) => m.mixPct)).toEqual([25, 50, 0]);
+    expect(tem.ranking.map((m) => m.mixPct)).toEqual([50, 25, 0, 75]);
 
     const mer = recommendForSpecies(d.trials, 'meranti')!;
-    expect(mer.ranking.map((m) => m.mixPct)).toEqual([25, 0, 50]);
+    expect(mer.ranking.map((m) => m.mixPct)).toEqual([25, 0, 50, 75]);
     const s = Object.fromEntries(mer.ranking.map((m) => [m.mixPct, m.score]));
     expect(s[25] - s[0]).toBeGreaterThan(0);
     expect(s[25] - s[0]).toBeLessThan(6);
     expect(s[0] - s[50]).toBeGreaterThanOrEqual(15);
+    expect(s[50] - s[75]).toBeGreaterThan(0);
 
     const ang = recommendForSpecies(d.trials, 'angsana')!;
-    expect(ang.ranking.map((m) => m.mixPct)).toEqual([50, 25, 0]);
+    expect(ang.ranking.map((m) => m.mixPct)).toEqual([50, 25, 75, 0]);
     const a = Object.fromEntries(ang.ranking.map((m) => [m.mixPct, m.score]));
     expect(a[50] - a[25]).toBeGreaterThanOrEqual(2);
 
@@ -83,7 +84,7 @@ describe('buildSampleData', () => {
   });
 
   test('KPIs match the story', () => {
-    expect(computeKpis(d)).toMatchObject({ batchesActive: 2, batchesPassed: 1, batchesFailed: 1, seedlingsGrowing: 99 });
+    expect(computeKpis(d)).toMatchObject({ batchesActive: 2, batchesPassed: 1, batchesFailed: 1, seedlingsGrowing: 128 });
   });
 
   test('has 6 tagged trees', () => {

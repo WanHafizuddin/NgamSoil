@@ -13,7 +13,7 @@ export function TrialsPage() {
 
   return (
     <>
-      <PageHeader title="Nursery trials" intro="Each trial grows one species in three trays, from no compost to half compost." />
+      <PageHeader title="Nursery trials" intro="Each trial grows one species in four trays, from no compost to three-quarters compost." />
       <div className="grid gap-4 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:items-start">
         <section aria-label="Trials">
           {data.trials.length === 0 ? (

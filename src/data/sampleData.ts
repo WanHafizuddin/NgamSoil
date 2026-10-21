@@ -98,12 +98,11 @@ const TRIAL_PLAN: { id: string; species: SpeciesId }[] = [
   { id: 'NS-TR-003', species: 'angsana' },
 ];
 
-const PLANTED = '2026-10-16';
 const TREE_PLAN: Omit<Tree, 'batchId'>[] = [
-  { id: 'NS-T-0001', species: 'tembusu', trayId: 'NS-TR-002-M25', plantedAt: PLANTED, location: 'Elmina Central Park, east lawn' },
-  { id: 'NS-T-0002', species: 'tembusu', trayId: 'NS-TR-002-M25', plantedAt: PLANTED, location: 'Elmina Central Park, east lawn' },
+  { id: 'NS-T-0001', species: 'tembusu', trayId: 'NS-TR-002-M25' },
+  { id: 'NS-T-0002', species: 'tembusu', trayId: 'NS-TR-002-M25' },
   { id: 'NS-T-0003', species: 'tembusu', trayId: 'NS-TR-002-M25' },
-  { id: 'NS-T-0004', species: 'meranti', trayId: 'NS-TR-001-M25', plantedAt: PLANTED, location: 'Elmina Central Park, lakeside path' },
+  { id: 'NS-T-0004', species: 'meranti', trayId: 'NS-TR-001-M25' },
   { id: 'NS-T-0005', species: 'meranti', trayId: 'NS-TR-001-M25' },
   { id: 'NS-T-0006', species: 'meranti', trayId: 'NS-TR-001-M0' },
 ];
@@ -134,7 +133,7 @@ function buildBatch(plan: BatchPlan, intakes: Intake[]): Batch {
   const linked = intakes.filter((i) => i.batchId === plan.id);
   const batch: Batch = {
     id: plan.id,
-    createdAt: `${linked[linked.length - 1].date}T02:00:00.000Z`,
+    createdAt: `${linked[0].date}T02:00:00.000Z`,
     intakeIds: linked.map((i) => i.id),
     status: plan.status,
     tempReadings: generateTempReadings({

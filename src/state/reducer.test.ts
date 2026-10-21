@@ -67,11 +67,11 @@ describe('reducer', () => {
     expect(reducer(state, { type: 'saveTestResult', batchId: 'NS-B-2026-004', result })).toBe(state);
   });
 
-  test('createTrial makes 3 trays and sends the batch to the nursery', () => {
+  test('createTrial makes 4 trays and sends the batch to the nursery', () => {
     const next = reducer(sample(), { type: 'createTrial', id: 'NS-TR-004', species: 'angsana', batchId: 'NS-B-2026-001', now });
     const trial = next.trials.at(-1)!;
     expect(trial).toMatchObject({ id: 'NS-TR-004', species: 'angsana', batchId: 'NS-B-2026-001', startDate: '2026-10-19' });
-    expect(trial.trays.map((t) => t.id)).toEqual(['NS-TR-004-M0', 'NS-TR-004-M25', 'NS-TR-004-M50']);
+    expect(trial.trays.map((t) => t.id)).toEqual(['NS-TR-004-M0', 'NS-TR-004-M25', 'NS-TR-004-M50', 'NS-TR-004-M75']);
     for (const t of trial.trays) {
       expect(t.weekly).toEqual([{ week: 0, heightCm: 12, leafHealth: expect.any(Number), alive: 12 }]);
       expect(t.logs).toEqual([]);

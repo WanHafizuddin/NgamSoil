@@ -46,7 +46,7 @@ describe('PublicTreePage', () => {
     await renderApp({ route: '/tree/NS-T-0001', role: 'public' });
     expect(screen.getByRole('heading', { level: 1, name: 'Tembusu' })).toBeInTheDocument();
     expect(screen.queryByText('Not available for this role')).not.toBeInTheDocument();
-    expect(screen.getByText('Elmina Central Park, east lawn')).toBeInTheDocument();
+    expect(screen.getByText('Still growing in the Elmina nursery')).toBeInTheDocument();
   });
 
   test('a tree still in the nursery says so', async () => {

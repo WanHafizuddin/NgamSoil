@@ -16,8 +16,8 @@ describe('DashboardPage', () => {
     expect(screen.getByText(formatKg(k.wasteDivertedKg))).toBeInTheDocument();
     expect(screen.getByText(formatKg(k.estimatedSoilSavedKg))).toBeInTheDocument();
     expect(screen.getByText('2 active · 1 passed · 1 failed')).toBeInTheDocument();
-    expect(screen.getByText('99')).toBeInTheDocument();
-    expect(screen.getByText('92%')).toBeInTheDocument();
+    expect(screen.getByText('128')).toBeInTheDocument();
+    expect(screen.getByText('89%')).toBeInTheDocument();
     expect(screen.getAllByText('Sample data').length).toBeGreaterThan(0);
   });
 

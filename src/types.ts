@@ -8,8 +8,8 @@ export type Material = (typeof MATERIALS)[number];
 
 export type BatchStatus = 'composting' | 'ready_for_test' | 'passed' | 'failed' | 'sent_to_nursery';
 
-export type MixPct = 0 | 25 | 50;
-export const MIX_PCTS: readonly MixPct[] = [0, 25, 50];
+export type MixPct = 0 | 25 | 50 | 75;
+export const MIX_PCTS: readonly MixPct[] = [0, 25, 50, 75];
 
 export type SpeciesId = 'meranti' | 'tembusu' | 'angsana' | 'kelat';
 

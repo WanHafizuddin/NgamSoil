@@ -54,7 +54,7 @@ export function NewTrialForm({ preselectBatch }: { preselectBatch?: string }) {
           ))}
         </select>
       </div>
-      <p className="text-sm text-soil-700">Three trays are set up: 0% compost as the control, 25% and 50% compost.</p>
+      <p className="text-sm text-soil-700">Four trays are set up: 0% compost as the control, then 25%, 50% and 75% compost.</p>
       <button type="submit" className={btnPrimary}>
         Start trial
       </button>

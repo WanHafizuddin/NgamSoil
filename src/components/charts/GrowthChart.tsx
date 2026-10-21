@@ -3,7 +3,7 @@ import type { MixPct, Tray } from '../../types';
 import { mixLabel } from '../../lib/format';
 import { EmptyState } from '../EmptyState';
 
-const COLORS: Record<MixPct, string> = { 0: '#8B6447', 25: '#2F5D43', 50: '#3B7EA1' };
+const COLORS: Record<MixPct, string> = { 0: '#8B6447', 25: '#2F5D43', 50: '#3B7EA1', 75: '#C8553D' };
 
 export function GrowthChart({ trays }: { trays: Tray[] }) {
   const maxWeek = Math.max(0, ...trays.flatMap((t) => t.weekly.map((w) => w.week)));

@@ -1,13 +1,17 @@
+import { useState } from 'react';
 import { PageHeader } from '../components/PageHeader';
 import { PreliminaryBadge } from '../components/PreliminaryBadge';
 import { SampleBadge } from '../components/SampleBadge';
+import { btnSecondary } from '../components/ui';
 import { useData } from '../state/DataContext';
 import { SPECIES } from '../data/species';
 import { recommendForSpecies } from '../lib/scoring';
 import { mixLabel } from '../lib/format';
+import type { SpeciesId } from '../types';
 
 export function RecommendationsPage() {
   const { data } = useData();
+  const [approved, setApproved] = useState<Partial<Record<SpeciesId, boolean>>>({});
 
   return (
     <>
@@ -16,6 +20,7 @@ export function RecommendationsPage() {
         intro={
           <>
             <p>Rule-based score: height growth 50%, leaf health 30%, survival 20%.</p>
+            <p>Species-specific: each tree reacts differently to compost.</p>
             <p>Updates as more batches and trials are added.</p>
             <p className="mt-1 text-sm">All recommendations are preliminary until the 3-month Elmina nursery pilot ends.</p>
           </>
@@ -56,6 +61,13 @@ export function RecommendationsPage() {
                       </li>
                     ))}
                   </ol>
+                  {approved[sp.id] ? (
+                    <p className="font-bold text-leaf-900">Mix approved</p>
+                  ) : (
+                    <button type="button" className={btnSecondary} onClick={() => setApproved((a) => ({ ...a, [sp.id]: true }))}>
+                      Approve mix
+                    </button>
+                  )}
                 </>
               ) : (
                 <p className="text-soil-700">No trial data yet</p>

@@ -5,15 +5,15 @@ import { renderApp } from '../test/render';
 const card = (name: string) => within(screen.getByRole('article', { name }));
 
 describe('RecommendationsPage', () => {
-  test('recommends 25% compost for Tembusu', async () => {
+  test('recommends 50% compost for Tembusu', async () => {
     await renderApp({ route: '/recommendations' });
     const tembusu = card('Tembusu');
-    expect(tembusu.getByText('Best mix: 25% compost')).toBeInTheDocument();
+    expect(tembusu.getByText('Best mix: 50% compost')).toBeInTheDocument();
     expect(tembusu.getByText('Preliminary')).toBeInTheDocument();
     expect(tembusu.getByText('Sample data')).toBeInTheDocument();
-    expect(tembusu.getByText('3 trays · 6 weeks')).toBeInTheDocument();
-    expect(tembusu.getByText(/^25% compost grew/)).toBeInTheDocument();
-    expect(tembusu.getAllByRole('listitem')).toHaveLength(3);
+    expect(tembusu.getByText('4 trays · 6 weeks')).toBeInTheDocument();
+    expect(tembusu.getByText(/^50% compost grew/)).toBeInTheDocument();
+    expect(tembusu.getAllByRole('listitem')).toHaveLength(4);
   });
 
   test('recommends 25% compost for Meranti', async () => {
@@ -30,8 +30,22 @@ describe('RecommendationsPage', () => {
     expect(within(ranking).getAllByRole('listitem').map((li) => li.firstElementChild?.firstElementChild?.textContent)).toEqual([
       '50% compost',
       '25% compost',
+      '75% compost',
       '0% (control)',
     ]);
+  });
+
+  test('species mixes differ: Meranti and Tembusu get different best mixes', async () => {
+    await renderApp({ route: '/recommendations' });
+    expect(card('Meranti').getByText('Best mix: 25% compost')).toBeInTheDocument();
+    expect(card('Tembusu').getByText('Best mix: 50% compost')).toBeInTheDocument();
+  });
+
+  test('approving a mix shows it as approved', async () => {
+    const { user } = await renderApp({ route: '/recommendations' });
+    const tembusu = card('Tembusu');
+    await user.click(tembusu.getByRole('button', { name: 'Approve mix' }));
+    expect(tembusu.getByText('Mix approved')).toBeInTheDocument();
   });
 
   test('species without trials say so', async () => {

@@ -7,7 +7,7 @@ const FLOW = [
   { icon: Leaf, title: 'Waste intake', body: 'Leaves, branches and grass are weighed and logged.' },
   { icon: Thermometer, title: 'Compost pile', body: 'An IoT probe tracks the pile temperature.' },
   { icon: FlaskConical, title: 'Maturity test', body: 'AI reads a germination photo to check the compost is mature.' },
-  { icon: Sprout, title: 'Nursery trials', body: 'IoT moisture sensors and AI seedling photos compare 0%, 25% and 50% mixes.' },
+  { icon: Sprout, title: 'Nursery trials', body: 'IoT moisture sensors and AI seedling photos compare 0%, 25%, 50% and 75% mixes.' },
   { icon: Award, title: 'Mix per species', body: 'Each species gets the mix it grew best in.' },
   { icon: QrCode, title: 'QR tag on the tree', body: 'Residents scan a planted tree to see its story.' },
 ];
@@ -30,8 +30,9 @@ export function AboutPage() {
       <div className="grid gap-4 md:grid-cols-2">
         <Panel title="The problem">
           <p className="text-soil-900">
-            Township parks and homes produce tonnes of fallen leaves, branches and grass. Most of it is burned or sent to landfill, while
-            nurseries buy soil for their seedlings. Where compost is made, nobody checks whether it actually suits a given tree species.
+            Township parks and homes produce tonnes of fallen leaves, branches and grass. Most of it is sent to landfill (RM43 per tonne in
+            Selangor), while nurseries need growing media for their seedlings. Where compost is made, nobody checks whether it actually suits a
+            given tree species.
           </p>
         </Panel>
         <Panel title="What's new">
