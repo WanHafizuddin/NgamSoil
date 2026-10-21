@@ -1,7 +1,10 @@
 import type { AppData, Role } from '../types';
 import { buildSampleData } from '../data/sampleData';
 
-export const STORAGE_KEY = 'ngamsoil:data:v1';
+// Bump the key when the sample data changes, so browsers drop older saves and show
+// the new sample. v2 added the Angsana trial.
+export const STORAGE_KEY = 'ngamsoil:data:v2';
+const OLD_STORAGE_KEYS = ['ngamsoil:data:v1'];
 export const ROLE_KEY = 'ngamsoil:role';
 const ROLES: Role[] = ['admin', 'staff', 'public'];
 
@@ -19,6 +22,7 @@ function isAppData(value: unknown): value is AppData {
 
 export function loadData(): AppData {
   try {
+    for (const key of OLD_STORAGE_KEYS) localStorage.removeItem(key);
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed: unknown = JSON.parse(raw);
